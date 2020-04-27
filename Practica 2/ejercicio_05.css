@@ -1,0 +1,42 @@
+/* item N°1*/
+h1,h2,h3,h4,h5,h6{
+    color:red
+}
+
+/* item N°2*/
+p a[href]{
+    color: black;
+}
+
+/* item N°3*/
+ul > li.ultimo {
+    color: yellow;
+}
+  
+ul > li.ultimo a {
+    color: blue;
+}
+
+/* item N°4*/
+h1.importante{
+    color: red;
+}
+
+.importante{
+    color: green;
+}
+
+/* item N°5*/
+h1[title] {
+    color: blue;
+  }
+
+/* item N°6*/
+ol > li > a {
+    text-decoration: none;
+    color: blue;
+  }
+  
+  ol > li > a:visited {
+    color: violet;
+  }
