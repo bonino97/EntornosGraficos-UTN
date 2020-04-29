@@ -1,0 +1,13 @@
+1 - CSS es "Cascade style sheet" hoja de estilos en cascada y se utilizan para dar estilo a documentos HTML.
+2 - En cada regla se define el elemento al cual se va aplicar (selector) y la declaraciones, las cuales van a ser los estilos que deba tomar dicho selector.
+3 - Las tres formas son:
+    1) Con una hoja de estilo externa la cual será referenciada a través de un link en el head
+    2) Utilizar una etiqueta style definiendo los estilos dentro del archivo HTML
+    3) Definiendo los estilos etiqueta por etiqueta de html.
+4 - Los más utilizados son:
+    - Selector de clase: En el elemento html se define un atributo "class" con el nombre de la clase luego en las definiciones de CSS se define al selector como un punto seguido del nombre de clase elegido ejemplo ".miclase" y dentro de los corchetes se define sus estilos.
+    - Selector de id: En el elemento html se define un atributo "id" con el nombre de identificador elegido luego en las definiciones de CSS se define al selector como un numeral seguido del identificador elegido ejemplo "#miid" y dentro de los corchetes se define sus estilos.
+    - Selector por nombre de etiqueta: Se define directamente en el CSS el nombre del atributo por ejemplo "p" luego dentro de los corchetes las definiciones y estas aplican a todos las etiquetas de párrafo.
+5 - La pseudo clases es una palabra clave que se le asigna a un selector para indicar estilos que debe tomar ante un evento en concreto. Los más utilizados son :hover, :focus, etc.
+6 - La herencia en CSS hace referencia a que todos los estilos asignados a un padre son aplicados por su hijo, por ejemplo, si definimos al body color de letra rojo, todos los elemento que muestran texto dentro del mismo tendrán letras rojas.
+7 - El proceso de cascada consiste en que los cambios se van tomando mientras mas abajo esten en el documento, por ejemplo, si en la línea 3 definimos a las etiquetas de párrafo color rojo y luego en la línea 35 definimos a las mismas etiquetas color azul, las mismas van a tener color azul.
