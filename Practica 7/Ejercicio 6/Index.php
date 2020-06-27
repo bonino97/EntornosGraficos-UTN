@@ -29,8 +29,10 @@
                                 }
                                 session_destroy();
                             ?>
-
                         </blockquote>
+                        <br>
+                        <hr>
+                        <a class="btn btn-outline-danger" href="Sesiones.php">Volver</a>
                     </div>
                 </div>
             </div>
