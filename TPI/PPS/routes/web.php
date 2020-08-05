@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +16,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        $user = Auth::user();
+        $profile = ProfileController::get($user->profile_id);
+
+        return view(strtolower($profile->name));
+    }
+    else
+    {
+        return view('login', ["error"=> ""]);
+    }
 });
+
+Route::post('/login', "UserController@login");
+Route::post('/logout', "UserController@logout");
