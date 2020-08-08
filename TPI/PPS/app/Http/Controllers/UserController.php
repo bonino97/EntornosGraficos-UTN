@@ -43,5 +43,12 @@ class UserController extends Controller
     {
         Auth::logout();
         return redirect('/');
+    } 
+
+    public function register(Request $request)
+    {
+        $name=$request->input('name');
+        $email=$request->input('email');
+        $password=$request->input('password'); 
     }
 }
