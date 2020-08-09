@@ -6,13 +6,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard</title>
+    <title>Perfil</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{ asset('css/screen.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/screen.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/d10383ab02.js" crossorigin="anonymous"></script>
   </head>
 
@@ -28,82 +28,74 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav nav nav-pills mr-auto ml-3">
             <li class="nav-item">
-              <a class="nav-link" href="/profile">Perfil </a>
+              <a class="nav-link" href="#">Perfil </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Tutor</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Mis Informes</a>
+                <a class="nav-link" href="/">Mis Informes</a>
             </li>
           </ul>
+          <form class="form-inline mt-2 mt-md-0">
             <div class="btn-group dropleft">
-            <button type="button" class="btn btn-outline-success btn-sm" data-toggle="dropdown" aria-haspopup="true" style="">
-                <i class="far fa-bell"></i>
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#"> Notificacion 1 </a>
-                <a class="dropdown-item" href="#"> Notificacion 2 </a>
-                <a class="dropdown-item" href="#"> Notificacion 3 </a>
-            </div>
-            </div>
-            &nbsp;
-            <form action="/logout" method="post">
-                {{ csrf_field() }}
-                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i></button>
-            </form>
+                <button type="button" class="btn btn-outline-success btn-sm" data-toggle="dropdown" aria-haspopup="true" style="">
+                  <i class="far fa-bell"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#"> Notificacion 1 </a>
+                  <a class="dropdown-item" href="#"> Notificacion 2 </a>
+                  <a class="dropdown-item" href="#"> Notificacion 3 </a>
+                </div>
+              </div>
+              &nbsp;
+              <button type="button" class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i></button>
+          </form>
         </div>
       </nav>
     </header>
 
     <!-- Begin page content -->
-    <div role="main"  class="container-fluid" style="margin-top:4rem ;">
+    <div role="main" class="container-fluid" style="margin-top:4rem ;">
         <div class="row">
             <div class="col">
                 <div class="card">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                          <li class="breadcrumb-item"><a href="#">Portada</a></li>
-                          <li class="breadcrumb-item"><a href="#">Mis Informes</a></li>
+                          <li class="breadcrumb-item"><a href="/">Portada</a></li>
+                          <li class="breadcrumb-item"><a href="#">Perfil</a></li>
                         </ol>
                     </nav>
 
                     <div class="card-body">
                         <div class="jumbotron jumbotron-fluid shadow">
                             <div class="container">
-                                <div class="card mt-1" >
-                                    <div class="card-header">  
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <h4>Informe 1: </h4>
-                                            </div>
-                                            <div class="col-6">
-                                                <input type="file" class="form-control-file">
-                                            </div>
-                                        </div>                                        
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                      <li class="list-group-item">Estado:</li>
-                                      <li class="list-group-item">Nota:</li>
-                                      <li class="list-group-item">Comentarios:</li>
-                                    </ul>
-                                </div>
-                                <div class="card mt-1" >
-                                    <div class="card-header">  
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <h4>Informe 2: </h4>
-                                            </div>
-                                            <div class="col-6">
-                                                <input type="file" class="form-control-file">
-                                            </div>
-                                        </div>                                        
-                                    </div>
-                                    <ul class="list-group list-group-flush">
-                                      <li class="list-group-item">Estado:</li>
-                                      <li class="list-group-item">Nota:</li>
-                                      <li class="list-group-item">Comentarios:</li>
-                                    </ul>
+                                <div class="card mx-auto border-dark" style="width: 25rem;">
+                                    <img class="card-img-top img-thumbnail" src="{{ asset('images/utn.jpg') }}">
+                                    <form method="post" action="/profile">
+                                        {{ csrf_field() }}
+                                        <div class="card-body">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">
+                                                    <input name="name" class="form-control modify" type="text" placeholder="Nombre" value="{{ $user->name }}">
+                                                    <h5 class="card-title text-center data">{{ $user->name }}</h5>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <input name="email" class="form-control modify" type="text" placeholder="Email" value="{{ $user->email }}">
+                                                    <p class="card-title text-center data">{{ $user->email }}</p>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <p class="card-title text-center">{{ $user->file }}</p>
+                                                </li>
+                                            </ul>
+                                            <p style="color: {{ $color }}; text-align: center;">{{ $message }}</p>
+                                        </div>
+    
+                                        <div class="card-body">
+                                            <button type="button" class="btn btn-outline-dark btn-block data btn-data">Editar Perfil</button>
+                                            <button type="submit" class="btn btn-outline-dark btn-block modify">Guardar</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -146,6 +138,11 @@
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
     <script src="./js/vendor/popper.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
+    <script>
+        $(".btn-data").click(function() {
+            $(".data").hide();
+            $(".modify").show();
+        });
+    </script>
   </body>
-
 </html>

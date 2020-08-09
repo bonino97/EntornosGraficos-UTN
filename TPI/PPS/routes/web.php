@@ -28,5 +28,19 @@ Route::get('/', function () {
     }
 });
 
+Route::get('/profile', function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+
+        return view('profile', ["user"=> $user, "message"=> "", "color"=> ""]);
+    }
+    else
+    {
+        return view('login', ["error"=> ""]);
+    }
+});
+
+
 Route::post('/login', "UserController@login");
 Route::post('/logout', "UserController@logout");
+Route::post('/profile', "UserController@update");

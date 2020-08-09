@@ -18,8 +18,6 @@ class UserController extends Controller
      */
     public function login(LoginUser $request)
     {
-        $response = new ApiResponse;
-
         $credentials = $request->only('email', 'password');
         
         if (Auth::attempt($credentials)) {
@@ -29,8 +27,6 @@ class UserController extends Controller
         {
             return view('login', ["error"=> "Los datos no son correctos"]);
         }
-
-        return $response->getResponse();
     }
 
     /**
@@ -43,5 +39,30 @@ class UserController extends Controller
     {
         Auth::logout();
         return redirect('/');
+    }
+
+    /**
+     * Update user.
+     *
+     * @param Request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request)
+    {
+        try
+        {
+            $user = Auth::user();
+        
+            $user->name = $request->name;
+            $user->email = $request->email;
+    
+            $user->save();
+    
+            return view('profile', ["user"=> $user, "message" => "El cambio se guardo con éxito", "color"=> "#28A745"]);
+        }
+        catch(Exception $e)
+        {
+            return view('profile', ["user"=> $user, "message" => "Ócurrio un error guardando los cambios", "color"=> "#DC3545"]);
+        }        
     }
 }
