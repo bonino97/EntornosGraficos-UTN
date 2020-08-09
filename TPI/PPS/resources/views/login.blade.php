@@ -21,11 +21,16 @@
         <div class="checkbox mb-3">
             <a href="javascript:void(0)">¿Olvidaste tu contraseña?</a>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-sm-6 btn-group-sm">
-                <button class="btn btn-lg btn-outline-secondary btn-block" type="submit">Crear Cuenta</button>
+                <a class="btn btn-lg btn-outline-secondary btn-block" href="/register" type="button">Crear Cuenta</a>
             </div>
             <div class="col-sm-6 btn-group-sm">
+                <button class="btn btn-lg btn-outline-secondary btn-block" type="submit">Iniciar Sesion</button>
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="col-sm-12 btn-group-sm">
                 <button class="btn btn-lg btn-outline-secondary btn-block" type="submit">Iniciar Sesion</button>
             </div>
         </div>

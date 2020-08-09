@@ -15,6 +15,9 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
+
+// Route::view('/register', "register");
+
 Route::get('/', function () {
     if (Auth::check()) {
         $user = Auth::user();
@@ -44,3 +47,4 @@ Route::get('/profile', function () {
 Route::post('/login', "UserController@login");
 Route::post('/logout', "UserController@logout");
 Route::post('/profile', "UserController@update");
+Route::post('/register', "UserController@register");
