@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Report;
+use App\User;
+
 
 class User extends Authenticatable
 {
@@ -16,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'profile_id', 'file'
+        'name', 'email', 'password', 'profile_id', 'file', 'tutor_id'
     ];
 
     /**
@@ -43,5 +46,25 @@ class User extends Authenticatable
     public function profile()
     {
         return $this->hasOne('App\Profile');
+    }
+
+      /**
+     * Get all the reports by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reports()
+    {
+        return $this->hasMany(Report::class)->latest();
+    }
+
+     /**
+     * Get tutor of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tutor()
+    {
+        return $this->belongsTo(User::class, 'tutor_id');
     }
 }

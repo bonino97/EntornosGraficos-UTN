@@ -12,12 +12,10 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{ asset('css/screen.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/screen.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/d10383ab02.js" crossorigin="anonymous"></script>
   </head>
-
   <body>
-
     <header>
       <!-- Fixed navbar -->
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -31,10 +29,10 @@
               <a class="nav-link" href="/profile">Perfil </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Tutor</a>
+              <a class="nav-link" href="/tutor">Tutor</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Mis Informes</a>
+                <a class="nav-link" href="/">Mis Informes</a>
             </li>
           </ul>
             <div class="btn-group dropleft">
@@ -63,58 +61,53 @@
                 <div class="card">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                          <li class="breadcrumb-item"><a href="#">Portada</a></li>
-                          <li class="breadcrumb-item"><a href="#">Mis Informes</a></li>
+                          <li class="breadcrumb-item"><a href="/">Portada</a></li>
+                          <li class="breadcrumb-item"><a href="/">Mis Informes</a></li>
                         </ol>
                     </nav>
-
                     <div class="card-body">
                         <div class="jumbotron jumbotron-fluid shadow">
                             <div class="container">
-                                <div class="card mt-1" >
-                                    <div class="card-header">  
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <h4>Informe 1: </h4>
-                                            </div>
-                                            <div class="col-6">
-                                                <input type="file" class="form-control-file">
-                                            </div>
-                                        </div>                                        
-                                    </div>
+                              @foreach ($reports as $report)
+                              <div class="card mt-1" >
+                                  <div class="card-header">  
+                                      <div class="row">
+                                          <div class="col-6">
+                                              <h4>Informe: {{$report->name}}</h4>
+                                          </div>
+                                      </div>                                  
+                                  </div>
+                                  <form action="/uploadFile" method="post" enctype="multipart/form-data">
+                                    {{ csrf_field() }}
                                     <ul class="list-group list-group-flush">
-                                      <li class="list-group-item">Estado:</li>
-                                      <li class="list-group-item">Nota:</li>
-                                      <li class="list-group-item">Comentarios:</li>
+                                      <li class="list-group-item">Estado: {{$report->state}}</li>
+                                      @if ($report->grade === null)
+                                        <li class="list-group-item">Nota: -</li>
+                                      @else
+                                        <li class="list-group-item">Nota: {{$report->grade}}</li>
+                                      @endif
+                                      <li class="list-group-item">Comentarios: {{$report->comments}}</li>
+                                      @if ($report->file === null)
+                                        <input name="reportFile" onclick="showButtonSave(this)" type="file" class="list-group-item">
+                                      @else
+                                        <li class="list-group-item">Archivo: {{$report->file}}</li>
+                                      @endif
                                     </ul>
-                                </div>
-                                <div class="card mt-1" >
-                                    <div class="card-header">  
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <h4>Informe 2: </h4>
-                                            </div>
-                                            <div class="col-6">
-                                                <input type="file" class="form-control-file">
-                                            </div>
-                                        </div>                                        
+                                    <div class="card-footer text-muted text-right save-file">
+                                        <button type="submit" class="btn btn-success end">Guardar</button>
                                     </div>
-                                    <ul class="list-group list-group-flush">
-                                      <li class="list-group-item">Estado:</li>
-                                      <li class="list-group-item">Nota:</li>
-                                      <li class="list-group-item">Comentarios:</li>
-                                    </ul>
-                                </div>
+                                  </form>
+                              </div>
+                              @endforeach
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="col-lg-3 ">
               <h4 class="mb-4">
-                <form class="form-inline mt-2 mt-md-0">
-                    <input class="form-control mr-sm-2 col-9 mr-1" type="text" placeholder="Buscar">
+                <form class="form-inline mt-2 mt-md-0" method="get" action="/">
+                    <input class="form-control mr-sm-2 col-9 mr-1" name="name" type="text" placeholder="Buscar">
                     <button class="btn btn-outline-danger my-2 my-sm-0 col-2" type="submit"><i class="fas fa-search"></i></button>
                 </form>
               </h4>
@@ -122,16 +115,11 @@
                     <h4 class="card-header">Actividad Reciente</h4>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Contenido 1</li>
-                            <li class="list-group-item">Contenido 2</li>
-                            <li class="list-group-item">Contenido 3</li>
-                            <li class="list-group-item">Contenido 4</li>
-                            <li class="list-group-item">Contenido 5</li>
-                            <li class="list-group-item">Contenido 6</li>
-                            <li class="list-group-item">Contenido 7</li>
-                            <li class="list-group-item">Contenido 8</li>
-                            <li class="list-group-item">Contenido 9</li>
-                            <li class="list-group-item">Contenido 10</li>
+                            @foreach ($recentActivity as $activity)
+                            <li class="list-group-item">
+                                <a style="text-decoration: none; color: black; border: none;" href="/?name={{$activity->name}}">{{$activity->name}}</a>
+                            </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -146,6 +134,13 @@
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
     <script src="./js/vendor/popper.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
+    <script>
+      function showButtonSave(input) {
+        if(input) {
+          $($(input.parentElement.parentElement).find('.save-file')[0]).show();
+        }
+      }
+    </script>
   </body>
 
 </html>

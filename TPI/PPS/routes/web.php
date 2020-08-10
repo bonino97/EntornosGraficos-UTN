@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,12 +21,19 @@ use App\Http\Controllers\ProfileController;
 
 // Route::view('/register', "register");
 
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
     if (Auth::check()) {
         $user = Auth::user();
         $profile = ProfileController::get($user->profile_id);
 
-        return view(strtolower($profile->name));
+        if($request->get('name'))
+        {
+            return view(strtolower($profile->name), ["reports"=> ReportController::getByName(Request::get('name'), $user->id), "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
+        }
+        else
+        {
+            return view(strtolower($profile->name), ["reports"=> $user->reports, "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
+        }
     }
     else
     {
@@ -35,7 +45,7 @@ Route::get('/profile', function () {
     if (Auth::check()) {
         $user = Auth::user();
 
-        return view('profile', ["user"=> $user, "message"=> "", "color"=> ""]);
+        return view('profile', ["user"=> $user, "message"=> "", "color"=> "", "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
     }
     else
     {
@@ -43,6 +53,28 @@ Route::get('/profile', function () {
     }
 });
 
+Route::get('/tutor', function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+
+        return view('tutor_student', ['tutor'=> $user->tutor, "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
+    }
+    else
+    {
+        return view('login', ["error"=> ""]);
+    }
+});
+
+Route::post('/uploadFile', function(Request $request) {
+    if (Auth::check()) {
+        $user = Auth::user();
+        $profile = ProfileController::get($user->profile_id);
+        
+        $path = $request->file('reportFile')->store('images');
+        UserController::saveFile($path);
+        return redirect('/');
+    } 
+});
 
 Route::post('/login', "UserController@login");
 Route::post('/logout', "UserController@logout");

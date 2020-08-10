@@ -6,13 +6,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Perfil</title>
+    <title>Screen 3</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{ asset('css/screen.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/screen.min.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/d10383ab02.js" crossorigin="anonymous"></script>
   </head>
 
@@ -63,44 +63,34 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                           <li class="breadcrumb-item"><a href="/">Portada</a></li>
-                          <li class="breadcrumb-item"><a href="#">Perfil</a></li>
+                          <li class="breadcrumb-item"><a href="/tutor">Tutor</a></li>
                         </ol>
                     </nav>
 
                     <div class="card-body">
                         <div class="jumbotron jumbotron-fluid shadow">
                             <div class="container">
-                                <div class="card mx-auto border-dark" style="width: 25rem;">
-                                    <img class="card-img-top img-thumbnail" src="{{ asset('images/utn.jpg') }}">
-                                    <form method="post" action="/profile">
-                                        {{ csrf_field() }}
-                                        <div class="card-body">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">
-                                                    <input name="name" class="form-control modify" type="text" placeholder="Nombre" value="{{ $user->name }}">
-                                                    <h5 class="card-title text-center data">{{ $user->name }}</h5>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <input name="email" class="form-control modify" type="text" placeholder="Email" value="{{ $user->email }}">
-                                                    <p class="card-title text-center data">{{ $user->email }}</p>
-                                                </li>
-                                                <li class="list-group-item">
-                                                    <p class="card-title text-center">{{ $user->file }}</p>
-                                                </li>
-                                            </ul>
-                                            <p style="color: {{ $color }}; text-align: center;">{{ $message }}</p>
-                                        </div>
-    
-                                        <div class="card-body">
-                                            <button type="button" class="btn btn-outline-dark btn-block data btn-data">Editar Perfil</button>
-                                            <button type="submit" class="btn btn-outline-dark btn-block modify">Guardar</button>
-                                        </div>
-                                    </form>
+                                <div class="card border-dark">
+                                    <div class="media">
+                                      <img class="d-flex align-self-center mr-3" src="{{ asset('images/utn.jpg') }}" width="180" height="180" alt="Generic placeholder image">
+                                      <div class="media-body">
+                                        <ul class="list-group list-group-flush">
+                                          <li class="list-group-item border-dark"><h5 class="card-title text-center">{{$tutor->name}}</h5></li>
+                                          <li class="list-group-item border-dark"><p class="card-title text-center">{{$tutor->email}}</p></li>
+                                          <li class="list-group-item border-dark"><p class="card-title text-center">{{$tutor->file}}</p></li>
+                                        </ul>
+                                      </div>
+                                    </div>
+ 
+                                    <div class="card-body">
+                                      <a style="text-decoration: none;" href = "mailto:{{$tutor->email}}?subject=Contacto">
+                                        <button type="button" class="btn btn-outline-dark btn-block">Contactar</button>
+                                      </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="col-lg-3 ">
@@ -133,11 +123,5 @@
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
     <script src="./js/vendor/popper.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
-    <script>
-        $(".btn-data").click(function() {
-            $(".data").hide();
-            $(".modify").show();
-        });
-    </script>
   </body>
 </html>
