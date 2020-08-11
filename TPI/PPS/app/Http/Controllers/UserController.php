@@ -72,26 +72,4 @@ class UserController extends Controller
             return view('profile', ["user"=> $user, "message" => "Ócurrio un error guardando los cambios", "color"=> "#DC3545", "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
         }        
     }
-
-    /**
-     * Save file
-     *
-     * @param Request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public static function saveFile($file)
-    {
-        try
-        {
-            $user = Auth::user();
-            $user->file = $file;
-            $user->save();
-    
-            return true;
-        }
-        catch(Exception $e)
-        {
-            return false;
-        }        
-    }
 }

@@ -79,6 +79,7 @@
                                   </div>
                                   <form action="/uploadFile" method="post" enctype="multipart/form-data">
                                     {{ csrf_field() }}
+                                    <input type="hidden" name="id" value="{{$report->id}}" />
                                     <ul class="list-group list-group-flush">
                                       <li class="list-group-item">Estado: {{$report->state}}</li>
                                       @if ($report->grade === null)

@@ -15,4 +15,27 @@ class ReportController extends Controller
     {
         return Report::where('user_id', $user_id)->where('name', 'like', '%' . $name .'%')->orderBy('id', 'desc')->take(10)->get();
     }
+
+    /**
+     * Save file
+     *
+     * @param Request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public static function saveFile($id, $file)
+    {
+        try
+        {
+            $report = Report::where('id', $id)->first();
+
+            $report->file = $file;
+            $report->save();
+    
+            return true;
+        }
+        catch(Exception $e)
+        {
+            return false;
+        }        
+    }
 }

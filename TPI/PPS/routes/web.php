@@ -69,9 +69,10 @@ Route::post('/uploadFile', function(Request $request) {
     if (Auth::check()) {
         $user = Auth::user();
         $profile = ProfileController::get($user->profile_id);
-        
         $path = $request->file('reportFile')->store('images');
-        UserController::saveFile($path);
+
+        ReportController::saveFile($request->id, $path);
+        
         return redirect('/');
     } 
 });
