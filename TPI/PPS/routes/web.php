@@ -19,20 +19,36 @@ use Illuminate\Http\Request;
 */
 
 
-// Route::view('/register', "register");
+Route::get('/register', function(Request $request) {
+    return view('register', ['error' => '', 'message' => '']);
+});
 
 Route::get('/', function (Request $request) {
     if (Auth::check()) {
         $user = Auth::user();
         $profile = ProfileController::get($user->profile_id);
 
-        if($request->get('name'))
+        switch($profile->name)
         {
-            return view(strtolower($profile->name), ["reports"=> ReportController::getByName(Request::get('name'), $user->id), "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
-        }
-        else
-        {
-            return view(strtolower($profile->name), ["reports"=> $user->reports, "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
+            case "Student":
+                if($request->name) {
+                    $recentActivity = ReportController::getByName($request->name, $user->id);
+                }
+                else {
+                    $recentActivity = ReportController::getRecentActivityByUser($user->id);
+                }
+                
+                return view('student', ["reports" => $user->reports, "recentActivity" => $recentActivity]);
+            
+                case "Tutor":
+                    if($request->name) {
+                        $recentActivity = ReportController::getByNameAndTutor($request->name, $user->id);
+                    }
+                    else {
+                        $recentActivity = ReportController::getRecentActivityByTutor($user->id);
+                    }                    
+
+                    return view('tutor', ["students" => $user->students, "recentActivity" => $recentActivity]);
         }
     }
     else
@@ -41,11 +57,35 @@ Route::get('/', function (Request $request) {
     }
 });
 
+Route::get('/findStudent', function (Request $request) {
+    $students = UserController::getStudentByName($request->name);
+    
+    return view('tutor', ["students" => $students]);
+});
+
 Route::get('/profile', function () {
     if (Auth::check()) {
         $user = Auth::user();
+        $profile = ProfileController::get($user->profile_id);
 
-        return view('profile', ["user"=> $user, "message"=> "", "color"=> "", "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
+        switch($profile->name)
+        {
+            case "Student":
+                $recentActivity = ReportController::getRecentActivityByUser($user->id);
+
+                break;
+
+            case "Tutor":
+                $recentActivity = ReportController::getRecentActivityByTutor($user->id);
+
+                break;
+        }
+
+        return view('profile', ["user" => $user, 
+                                "message" => "", 
+                                "color" => "", 
+                                "recentActivity" => $recentActivity, 
+                                "profile" => $profile]);
     }
     else
     {
@@ -65,13 +105,53 @@ Route::get('/tutor', function () {
     }
 });
 
+Route::get('/tracking/{id}', function ($id) {
+    if (Auth::check()) {
+        $user = Auth::user();
+        $student = UserController::get($id);
+
+        return view('tracking', ['student'=> $student]);
+    }
+    else
+    {
+        return redirect('/');
+    }
+});
+
+Route::get('/tracking/{id}/add', function ($id) {
+    if (Auth::check()) {
+        $user = Auth::user();
+        $student = UserController::get($id);
+
+        return view('tracking_add', ['student'=> $student]);
+    }
+    else
+    {
+        return redirect('/');
+    }
+});
+
+Route::get('/tracking/{user_id}/edit/{report_id}', function ($user_id, $report_id) {
+    if (Auth::check()) {
+        $user = Auth::user();
+        $student = UserController::get($user_id);
+        $report = ReportController::get($report_id);
+
+        return view('tracking_edit', ['student'=> $student, 'report'=>$report]);
+    }
+    else
+    {
+        return redirect('/');
+    }
+});
+
 Route::post('/uploadFile', function(Request $request) {
     if (Auth::check()) {
         $user = Auth::user();
         $profile = ProfileController::get($user->profile_id);
-        $path = $request->file('reportFile')->store('images');
-
-        ReportController::saveFile($request->id, $path);
+        $path = $request->file('reportFile')->store('public');
+        
+        ReportController::saveFile($request->id, str_replace('public/', '', $path));
         
         return redirect('/');
     } 
@@ -81,3 +161,7 @@ Route::post('/login', "UserController@login");
 Route::post('/logout', "UserController@logout");
 Route::post('/profile', "UserController@update");
 Route::post('/register', "UserController@register");
+Route::post('/resetPassword', "UserController@resetPassword");
+Route::post('/report/store', "ReportController@store");
+Route::post('/report/remove', "ReportController@remove");
+Route::post('/report/edit', "ReportController@edit");

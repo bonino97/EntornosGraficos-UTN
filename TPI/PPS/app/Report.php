@@ -12,7 +12,7 @@ class Report extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'state', 'grade', 'comments', 'file', 'user_id'
+        'name', 'slogan', 'state', 'grade', 'comments', 'file', 'user_id'
     ];
 
     //Falta la foreing key de id_user con el usuario

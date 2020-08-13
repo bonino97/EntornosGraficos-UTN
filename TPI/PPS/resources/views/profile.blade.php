@@ -27,15 +27,25 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav nav nav-pills mr-auto ml-3">
-            <li class="nav-item">
-              <a class="nav-link" href="/profile">Perfil </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/tutor">Tutor</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/">Mis Informes</a>
-            </li>
+            @if ($profile->name === "Student")
+              <li class="nav-item">
+                <a class="nav-link" href="/profile">Perfil </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/tutor">Tutor</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/">Mis Informes</a>
+              </li>
+            @endif
+            @if ($profile->name === "Tutor")
+              <li class="nav-item">
+                <a class="nav-link" href="/profile">Perfil </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/">Alumnos</a>
+              </li>
+            @endif
           </ul>
           <form class="form-inline mt-2 mt-md-0">
             <div class="btn-group dropleft">

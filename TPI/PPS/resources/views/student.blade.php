@@ -81,6 +81,7 @@
                                     {{ csrf_field() }}
                                     <input type="hidden" name="id" value="{{$report->id}}" />
                                     <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Consigna: {{$report->slogan}}</li>
                                       <li class="list-group-item">Estado: {{$report->state}}</li>
                                       @if ($report->grade === null)
                                         <li class="list-group-item">Nota: -</li>
@@ -88,10 +89,15 @@
                                         <li class="list-group-item">Nota: {{$report->grade}}</li>
                                       @endif
                                       <li class="list-group-item">Comentarios: {{$report->comments}}</li>
-                                      @if ($report->file === null)
+                                      @if ($report->state === "A corregir")
+                                        <li class="list-group-item">Archivo: <a href="/storage/{{$report->file}}">{{$report->file}}</a></li>
                                         <input name="reportFile" onclick="showButtonSave(this)" type="file" class="list-group-item">
-                                      @else
-                                        <li class="list-group-item">Archivo: {{$report->file}}</li>
+                                        @else
+                                          @if ($report->file === null)
+                                            <input name="reportFile" onclick="showButtonSave(this)" type="file" class="list-group-item">
+                                          @else
+                                            <li class="list-group-item">Archivo: <a href="/storage/{{$report->file}}">{{$report->file}}</a></li>
+                                          @endif
                                       @endif
                                     </ul>
                                     <div class="card-footer text-muted text-right save-file">

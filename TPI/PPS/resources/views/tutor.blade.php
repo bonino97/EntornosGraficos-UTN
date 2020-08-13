@@ -28,13 +28,10 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav nav nav-pills mr-auto ml-3">
             <li class="nav-item">
-              <a class="nav-link" href="#">Perfil </a>
+              <a class="nav-link" href="/profile">Perfil </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Tutor</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Mis Informes</a>
+              <a class="nav-link" href="/">Alumnos </a>
             </li>
           </ul>
           <form class="form-inline mt-2 mt-md-0">
@@ -66,7 +63,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                           <li class="breadcrumb-item"><a href="#">Portada</a></li>
-                          <li class="breadcrumb-item"><a href="#">Mis Informes</a></li>
+                          <li class="breadcrumb-item"><a href="#">Alumnos</a></li>
                         </ol>
                     </nav>
 
@@ -75,8 +72,8 @@
 
                         </div>
                         <div class="col-4">
-                            <form class="form-inline" style="align-items: right;">
-                                <input class="form-control mr-sm-2" type="search" placeholder="Buscar..." >
+                            <form action="/findStudent" method="get" class="form-inline" style="align-items: right;">
+                                <input name="name" class="form-control mr-sm-2" type="search" placeholder="Buscar..." >
                                 <button class="btn btn-outline-primary my-2 my-sm-0 col-2" type="submit"><i class="fas fa-search"></i></button>
                             </form>
                         </div>
@@ -86,59 +83,25 @@
 
                         <div class="jumbotron jumbotron-fluid shadow">
                             <div class="container">
+                                @foreach ($students as $student)
                                 <div class="card" >
                                     <div class="card-header">  
                                         <div class="row">
                                             <div class="col-10">
-                                                <h4 class="mt-3">{Nombre Alumno} </h4>
+                                                <h4 class="mt-3">{{$student->name}}</h4>
                                             </div>
                                             <div class="col-2">
-                                                <button type="button" class="btn btn-outline-info shadow btn-sm">&nbsp;&nbsp;Contactar&nbsp;&nbsp;</button>
+                                                <a href="mailto:{{$student->email}}?subject=Contacto">
+                                                    <button type="button" class="btn btn-outline-info shadow btn-sm">&nbsp;&nbsp;Contactar&nbsp;&nbsp;</button>
+                                                </a>
+                                                <a href="/tracking/{{$student->id}}">
                                                 <button type="button" class="btn btn-outline-info shadow btn-sm">Seguimiento</button>
+                                                </a>
                                             </div>
                                         </div>                                        
                                     </div>
                                 </div>
-                                <div class="card mt-1" >
-                                    <div class="card-header">  
-                                        <div class="row">
-                                            <div class="col-10">
-                                                <h4 class="mt-3">{Nombre Alumno} </h4>
-                                            </div>
-                                            <div class="col-2">
-                                                <button type="button" class="btn btn-outline-info shadow btn-sm">&nbsp;&nbsp;Contactar&nbsp;&nbsp;</button>
-                                                <button type="button" class="btn btn-outline-info shadow btn-sm">Seguimiento</button>
-                                            </div>
-                                        </div>                                        
-                                    </div>
-                                </div>
-                                <div class="card mt-1" >
-                                    <div class="card-header">  
-                                        <div class="row">
-                                            <div class="col-10">
-                                                <h4 class="mt-3">{Nombre Alumno} </h4>
-                                            </div>
-                                            <div class="col-2">
-                                                <button type="button" class="btn btn-outline-info shadow btn-sm">&nbsp;&nbsp;Contactar&nbsp;&nbsp;</button>
-                                                <button type="button" class="btn btn-outline-info shadow btn-sm">Seguimiento</button>
-                                            </div>
-                                        </div>                                        
-                                    </div>
-                                </div>
-                                <div class="card mt-1" >
-                                    <div class="card-header">  
-                                        <div class="row">
-                                            <div class="col-10">
-                                                <h4 class="mt-3">{Nombre Alumno} </h4>
-                                            </div>
-                                            <div class="col-2">
-                                                <button type="button" class="btn btn-outline-info shadow btn-sm">&nbsp;&nbsp;Contactar&nbsp;&nbsp;</button>
-                                                
-                                                <button type="button" class="btn btn-outline-info shadow btn-sm">Seguimiento</button>
-                                            </div>
-                                        </div>                                        
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -147,25 +110,20 @@
             </div>
             <div class="col-lg-3">
                 <h4 class="mb-4">
-                    <form class="form-inline mt-2 mt-md-0">
-                        <input class="form-control mr-sm-2 col-9 mr-1" type="text" placeholder="Buscar">
-                        <button class="btn btn-outline-danger my-2 my-sm-0 col-2" type="submit"><i class="fas fa-search"></i></button>
-                    </form>
+                  <form class="form-inline mt-2 mt-md-0" method="get" action="/">
+                      <input class="form-control mr-sm-2 col-9 mr-1" name="name" type="text" placeholder="Buscar">
+                      <button class="btn btn-outline-danger my-2 my-sm-0 col-2" type="submit"><i class="fas fa-search"></i></button>
+                  </form>
                 </h4>
                 <div class="card shadow">
                     <h4 class="card-header">Actividad Reciente</h4>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Contenido 1</li>
-                            <li class="list-group-item">Contenido 2</li>
-                            <li class="list-group-item">Contenido 3</li>
-                            <li class="list-group-item">Contenido 4</li>
-                            <li class="list-group-item">Contenido 5</li>
-                            <li class="list-group-item">Contenido 6</li>
-                            <li class="list-group-item">Contenido 7</li>
-                            <li class="list-group-item">Contenido 8</li>
-                            <li class="list-group-item">Contenido 9</li>
-                            <li class="list-group-item">Contenido 10</li>
+                            @foreach ($recentActivity as $activity)
+                            <li class="list-group-item">
+                                <a style="text-decoration: none; color: black; border: none;" href="/?name={{$activity->name}}">{{$activity->name}}</a>
+                            </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>

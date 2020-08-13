@@ -6,7 +6,10 @@ use App\Http\Requests\LoginUser;
 use App\Http\Responses\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\Utils\Enums\Status;
+use App\User;
 
 class UserController extends Controller
 {
@@ -43,9 +46,50 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        $name=$request->input('name');
-        $email=$request->input('email');
-        $password=$request->input('password'); 
+        $profile = ProfileController::getByName($request->profile);
+
+        if($profile !== null)
+        {
+            if($request->password !== $request->repeatPassword)
+            {
+                return view('register', ['error' => 'Las claves no coinciden', 'message' => '']);
+            }
+
+            $user = new User();
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->profile_id = $profile->id;
+
+            $user->save();
+
+            return redirect('/');
+        }
+        else
+        {
+            return view('register', ['error' => 'El perfil no existe']);
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        
+        if($user !== null)
+        {
+            $newPassword = Str::random(8);
+            
+            $user->password = Hash::make($newPassword);
+
+            $user->save();
+            //TODO Falta mandar el mail
+            return redirect('/');
+        }
+        else
+        {
+            return view('login', ["error"=> "El email ingresado no pertenece a ningun usuario"]);
+        }
     }
 
     /**
@@ -71,5 +115,39 @@ class UserController extends Controller
         {
             return view('profile', ["user"=> $user, "message" => "Ócurrio un error guardando los cambios", "color"=> "#DC3545", "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
         }        
+    }
+
+    /**
+     * Get one.
+     *
+     * @param Request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public static function get($id)
+    {
+        try
+        {
+            $user = User::where('id', $id)->first();
+
+            return $user;
+        }
+        catch(Exception $e)
+        {
+            return null;
+        }             
+    }
+
+    public static function getStudentByName($name)
+    {
+        try
+        {
+            $users = User::where('name', 'like', '%' . $name .'%')->get();
+
+            return $users;
+        }
+        catch(Exception $e)
+        {
+            return null;
+        }           
     }
 }

@@ -10,16 +10,22 @@
     </head>
 
     <body class="text-center">
-        <form id="registerForm" class="form-signin shadow" action="{{URL::to('/register')}}" method="post">
+        <form id="registerForm" class="form-signin shadow" action="/register" method="post">
             {{ csrf_field() }}
             <img class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" alt="" width="200" height="200">
             <label class="sr-only">Nombre</label>
-            <input name="name" type="name" class="form-control" placeholder="Nombre" required="" autofocus="">
+            <input style="margin-bottom: 10px;" name="name" type="name" class="form-control" placeholder="Nombre" required="" autofocus="">
             <label class="sr-only">Email</label>
-            <input name="email" type="email" class="form-control" placeholder="Email" required="" autofocus="">
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input name="password" type="password" class="form-control" placeholder="Password" required="">
-            <!-- <input type="text" name="_token" value="{{csrf_token()}}"> -->
+            <input style="margin-bottom: 10px;" name="email" type="email" class="form-control" placeholder="Email" required="" autofocus="">
+            <label class="sr-only">Email</label>
+            <select style="margin-bottom: 10px;" name="profile" class="custom-select">
+                <option value="Student">Alumno</option>
+                <option value="Tutor">Tutor</option>
+            </select>
+            <label for="inputPassword" class="sr-only">Clave</label>
+            <input name="password" type="password" class="form-control" placeholder="Clave" required="">
+            <label for="inputPassword" class="sr-only">Repetir clave</label>
+            <input name="repeatPassword" type="password" class="form-control" placeholder="Repetir clave" required="">
             <p style="color: #CE6161;">{{ $error ?? '' }}</p>
 
             <div class="row">

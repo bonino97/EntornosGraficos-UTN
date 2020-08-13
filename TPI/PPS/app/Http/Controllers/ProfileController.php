@@ -31,4 +31,9 @@ class ProfileController extends Controller
     {
         return Profile::where('id',$id)->first();
     }
+
+    public static function getByName($name)
+    {
+        return Profile::where('name', 'like', '%' . $name .'%')->first();
+    }
 }

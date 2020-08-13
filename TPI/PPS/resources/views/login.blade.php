@@ -19,23 +19,51 @@
         <input name="password" type="password" class="form-control" placeholder="Password" required="">
         <p style="color: #CE6161;">{{ $error }}</p>
         <div class="checkbox mb-3">
-            <a href="javascript:void(0)">¿Olvidaste tu contraseña?</a>
+            <a id="forgetPassword" href="javascript:void(0)" >¿Olvidaste tu contraseña?</a>
         </div>
-        <!-- <div class="row">
+        <div class="row">
             <div class="col-sm-6 btn-group-sm">
                 <a class="btn btn-lg btn-outline-secondary btn-block" href="/register" type="button">Crear Cuenta</a>
             </div>
             <div class="col-sm-6 btn-group-sm">
                 <button class="btn btn-lg btn-outline-secondary btn-block" type="submit">Iniciar Sesion</button>
             </div>
-        </div> -->
-        <div class="row">
-            <div class="col-sm-12 btn-group-sm">
-                <button class="btn btn-lg btn-outline-secondary btn-block" type="submit">Iniciar Sesion</button>
+        </div>
+        <p class="mt-5 mb-3 text-muted">© 2020</p>
+        </form>
+        <div id="myModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Resetar clave</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/resetPassword" method="post">
+                    {{ csrf_field() }}
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
+                            </div>
+                            <input name="email" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Resetear</button>
+                    </div>
+                </form>
+               </div>
             </div>
         </div>
 
-        <p class="mt-5 mb-3 text-muted">© 2020</p>
-        </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
+    <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
+    <script>
+        $('#forgetPassword').on('click', function () {
+            $('#myModal').modal('show');
+        })
+    </script>
     </body>
 </html>

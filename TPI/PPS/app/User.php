@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'profile_id', 'file', 'tutor_id'
+        'name', 'email', 'password', 'profile_id', 'file', 'tutor_id', 'slogan'
     ];
 
     /**
@@ -66,5 +66,15 @@ class User extends Authenticatable
     public function tutor()
     {
         return $this->belongsTo(User::class, 'tutor_id');
+    }
+
+    /**
+     * Get all students by the tutor.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function students()
+    {
+        return $this->hasMany(User::class, 'tutor_id')->latest();
     }
 }
