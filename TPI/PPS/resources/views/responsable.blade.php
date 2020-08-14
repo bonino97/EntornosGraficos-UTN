@@ -37,11 +37,11 @@
             </li>
           </ul>
             <div class="btn-group dropleft">
-                <button alt="Notificaciones" title="Notificaciones" id="notificationButton" type="button" class="btn btn-outline-success btn-sm @if (count($user->notifications) > 0) hasNotifications @endif" data-toggle="dropdown" aria-haspopup="true">
+                <button alt="Notificaciones" title="Notificaciones" id="notificationButton" type="button" class="btn btn-outline-success btn-sm @if (count($responsable->notifications) > 0) hasNotifications @endif" data-toggle="dropdown" aria-haspopup="true">
                     <i class="far fa-bell"></i>
                 </button>
                 <div class="dropdown-menu">
-                  @foreach($user->notifications as $notification)
+                  @foreach($responsable->notifications as $notification)
                     <a class="dropdown-item" href="{{$notification->url}}">{{$notification->title}}</a>
                   @endforeach
                 </div>
@@ -159,7 +159,7 @@
     <script>
       $("#notificationButton").click(function() {
         $("#notificationButton").removeClass("hasNotifications");
-        $.get("/user/readNotifications/{{$user->id}}");
+        $.get("/user/readNotifications/{{$responsable->id}}");
       });
     </script>
   </body>

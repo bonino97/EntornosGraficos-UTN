@@ -115,7 +115,7 @@
             </div>
         </div>
     </div>
-    <footer class="page-footer font-small p-3 mt-1 fixed-bottom" style="background-color: grey;">
+    <footer class="page-footer font-small p-3 mt-1 @if(count($student->reports) <= 1) fixed-bottom @endif" style="background-color: grey;">
 
     <!-- Footer Links -->
     <div class="container-fluid text-center text-md-left">

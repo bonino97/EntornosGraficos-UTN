@@ -55,7 +55,7 @@ Route::get('/', function (Request $request) {
                 case "Responsable":
                     $users = UserController::getNewUsers();
 
-                    return view('responsable', ["user" => $user, 
+                    return view('responsable', ["responsable" => $user, 
                                                 "users" => $users]);
         }
     }
