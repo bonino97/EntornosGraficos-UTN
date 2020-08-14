@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 
 /*
@@ -31,14 +32,18 @@ Route::get('/', function (Request $request) {
         switch($profile->name)
         {
             case "Student":
+                $recentActivity = ReportController::getRecentActivityByUser($user->id);
+
                 if($request->name) {
-                    $recentActivity = ReportController::getByName($request->name, $user->id);
+                    $reports = ReportController::getByName($request->name, $user->id);
                 }
                 else {
-                    $recentActivity = ReportController::getRecentActivityByUser($user->id);
+                    $reports = $user->reports;
                 }
                 
-                return view('student', ["reports" => $user->reports, "recentActivity" => $recentActivity]);
+                return view('student', ["notifications" => $user->notifications, 
+                                        "reports" => $reports, 
+                                        "recentActivity" => $recentActivity]);
             
                 case "Tutor":
                     if($request->name) {
@@ -48,7 +53,12 @@ Route::get('/', function (Request $request) {
                         $recentActivity = ReportController::getRecentActivityByTutor($user->id);
                     }                    
 
-                    return view('tutor', ["students" => $user->students, "recentActivity" => $recentActivity]);
+                    return view('tutor', ["notifications" => $user->notifications, "students" => $user->students, "recentActivity" => $recentActivity]);
+
+                case "Responsable":
+                    $users = UserController::getNewUsers();
+
+                    return view('responsable', ["notifications" => $user->notifications, "users" => $users]);
         }
     }
     else
@@ -58,9 +68,30 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('/findStudent', function (Request $request) {
-    $students = UserController::getStudentByName($request->name);
+    if (Auth::check()) {
+        $user = Auth::user();
+
+        if($user->profile->name === "Tutor") {
+            if($request->name) {
+                $recentActivity = ReportController::getByNameAndTutor($request->name, $user->id);
+            }
+            else {
+                $recentActivity = ReportController::getRecentActivityByTutor($user->id);
+            }
+
+            $students = UserController::getStudentByName($request->name, $user->id);
     
-    return view('tutor', ["students" => $students]);
+            return view('tutor', ["notifications" => $user->notifications, "students" => $students, "recentActivity" => $recentActivity]);
+        }
+        else {
+            Auth::logout();
+            return redirect('/');
+        }
+    }
+    else {
+        return redirect('/');
+    }
+    
 });
 
 Route::get('/profile', function () {
@@ -97,7 +128,13 @@ Route::get('/tutor', function () {
     if (Auth::check()) {
         $user = Auth::user();
 
-        return view('tutor_student', ['tutor'=> $user->tutor, "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
+        if($user->profile->name === "Student") {
+            return view('tutor_student', ['tutor'=> $user->tutor, "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);   
+        }
+        else {
+            Auth::logout();
+            return redirect('/');
+        }
     }
     else
     {
@@ -108,9 +145,16 @@ Route::get('/tutor', function () {
 Route::get('/tracking/{id}', function ($id) {
     if (Auth::check()) {
         $user = Auth::user();
-        $student = UserController::get($id);
 
-        return view('tracking', ['student'=> $student]);
+        if($user->profile->name === "Tutor") {
+            $student = UserController::get($id);
+
+            return view('tracking', ['student'=> $student]);   
+        }
+        else {
+            Auth::logout();
+            return redirect('/');
+        }
     }
     else
     {
@@ -121,9 +165,16 @@ Route::get('/tracking/{id}', function ($id) {
 Route::get('/tracking/{id}/add', function ($id) {
     if (Auth::check()) {
         $user = Auth::user();
-        $student = UserController::get($id);
 
-        return view('tracking_add', ['student'=> $student]);
+        if($user->profile->name === "Tutor") {
+            $student = UserController::get($id);
+    
+            return view('tracking_add', ['student'=> $student]);   
+        }
+        else {
+            Auth::logout();
+            return redirect('/');
+        }
     }
     else
     {
@@ -134,10 +185,59 @@ Route::get('/tracking/{id}/add', function ($id) {
 Route::get('/tracking/{user_id}/edit/{report_id}', function ($user_id, $report_id) {
     if (Auth::check()) {
         $user = Auth::user();
-        $student = UserController::get($user_id);
-        $report = ReportController::get($report_id);
 
-        return view('tracking_edit', ['student'=> $student, 'report'=>$report]);
+        if($user->profile->name === "Tutor") {
+            $student = UserController::get($user_id);
+            $report = ReportController::get($report_id);
+    
+            return view('tracking_edit', ['student'=> $student, 'report'=>$report]);   
+        }
+        else {
+            Auth::logout();
+            return redirect('/');
+        }
+    }
+    else
+    {
+        return redirect('/');
+    }
+});
+
+Route::get('/responsable_register', function () {
+    if (Auth::check()) {
+        $user = Auth::user();
+
+        if($user->profile->name === "Responsable") {
+            $enableUsers = UserController::getEnableUsers();
+            $disableUsers = UserController::getDisabledUsers();
+
+            return view('responsable_register', ["enableUsers" => $enableUsers, "disableUsers" => $disableUsers]);
+        }
+        else {
+            Auth::logout();
+            return redirect('/');
+        }
+    }
+    else
+    {
+        return redirect('/');
+    }
+});
+
+Route::get('/user/setTutor/{user_id}', function ($user_id) {
+    if (Auth::check()) {
+        $user = Auth::user();
+
+        if($user->profile->name === "Responsable") {
+            $user = UserController::get($user_id);
+            $tutors = UserController::getTutors();
+
+            return view('set_tutor', ['user'=> $user, 'tutors'=>$tutors]);   
+        }
+        else {
+            Auth::logout();
+            return redirect('/');
+        }
     }
     else
     {
@@ -148,12 +248,20 @@ Route::get('/tracking/{user_id}/edit/{report_id}', function ($user_id, $report_i
 Route::post('/uploadFile', function(Request $request) {
     if (Auth::check()) {
         $user = Auth::user();
-        $profile = ProfileController::get($user->profile_id);
-        $path = $request->file('reportFile')->store('public');
-        
-        ReportController::saveFile($request->id, str_replace('public/', '', $path));
-        
-        return redirect('/');
+
+        if($user->profile->name === "Student") {
+            $path = $request->file('reportFile')->store('public');
+            
+            $report = ReportController::saveFile($request->id, str_replace('public/', '', $path));
+
+            NotificationController::store($user->name . ' subió el docuemnto del informe "' . $report->name . '"', '/tracking/' . $user->id, $user->tutor_id);
+            
+            return redirect('/');
+        }
+        else {
+            Auth::logout();
+            return redirect('/');
+        }
     } 
 });
 
@@ -162,6 +270,10 @@ Route::post('/logout', "UserController@logout");
 Route::post('/profile', "UserController@update");
 Route::post('/register', "UserController@register");
 Route::post('/resetPassword', "UserController@resetPassword");
+Route::post('/user/rejected', "UserController@rejected");
+Route::post('/user/accept', "UserController@accept");
+Route::post('/user/setTutor', "UserController@setTutor");
+Route::post('/user/finishPPS', "UserController@finishPPS");
 Route::post('/report/store', "ReportController@store");
 Route::post('/report/remove', "ReportController@remove");
 Route::post('/report/edit', "ReportController@edit");

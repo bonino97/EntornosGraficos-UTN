@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Report;
 use App\User;
+use App\Profile;
+use App\Notification;
 
 
 class User extends Authenticatable
@@ -19,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'profile_id', 'file', 'tutor_id', 'slogan'
+        'name', 'email', 'password', 'profile_id', 'file', 'tutor_id', 'slogan', 'state'
     ];
 
     /**
@@ -45,7 +47,7 @@ class User extends Authenticatable
      */
     public function profile()
     {
-        return $this->hasOne('App\Profile');
+        return $this->belongsTo(Profile::class, 'profile_id');
     }
 
       /**
@@ -76,5 +78,15 @@ class User extends Authenticatable
     public function students()
     {
         return $this->hasMany(User::class, 'tutor_id')->latest();
+    }
+
+    /**
+     * Get all notifications by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class)->latest();
     }
 }

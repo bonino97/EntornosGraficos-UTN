@@ -12,7 +12,7 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{ asset('css/screen.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/screen.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/d10383ab02.js" crossorigin="anonymous"></script>
   </head>
 
@@ -21,20 +21,19 @@
     <header>
       <!-- Fixed navbar -->
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <img class="img-thumbnail mb-0" src="{{ asset('images/utn.jpg') }}" width="35" height="35">
+        <img class="img-thumbnail mb-0" src="{{ asset('images/utn.jpg') }}" width="35" height="35">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav nav nav-pills mr-auto ml-3">
+          <ul class="navbar-nav nav mr-auto ml-3">
             <li class="nav-item">
-              <a class="nav-link" href="/profile">Perfil </a>
+              <a class="nav-link active" href="/">Nuevas Solicitudes </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/">Alumnos </a>
+              <a class="nav-link" href="/responsable_register">Registro</a>
             </li>
           </ul>
-          <form class="form-inline mt-2 mt-md-0">
             <div class="btn-group dropleft">
                 <button type="button" class="btn btn-outline-success btn-sm" data-toggle="dropdown" aria-haspopup="true">
                   <i class="far fa-bell"></i>
@@ -46,11 +45,10 @@
                 </div>
               </div>
               &nbsp;
-          </form>
-          <form action="{{URL::to('/logout')}}" method="post">
+              <form action="/logout" method="post">
                 {{ csrf_field() }}
                 <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i></button>
-        </form>
+            </form>
         </div>
       </nav>
     </header>
@@ -63,62 +61,47 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                           <li class="breadcrumb-item"><a href="#">Portada</a></li>
-                          <li class="breadcrumb-item"><a href="#">Alumnos</a></li>
+                          <li class="breadcrumb-item"><a href="#">Nuevas Solicitudes</a></li>
                         </ol>
                     </nav>
-
-                    <div class="row mb-1">
-                        <div class="col-8">
-
-                        </div>
-                        <div class="col-4">
-                            <form action="/findStudent" method="get" class="form-inline" style="align-items: right;">
-                                <input name="name" class="form-control mr-sm-2" type="search" placeholder="Buscar..." >
-                                <button class="btn btn-outline-primary my-2 my-sm-0 col-2" type="submit"><i class="fas fa-search"></i></button>
-                            </form>
-                        </div>
-                    </div>
-
                     <div class="card-body">
-
                         <div class="jumbotron jumbotron-fluid shadow">
                             <div class="container">
-                                @foreach ($students as $student)
-                                <div class="card" >
-                                    <div class="card-header">  
-                                        <div class="row">
-                                            <div class="col-10">
-                                                <h4 class="mt-3">{{$student->name}}</h4>
+                                <div id="accordion" role="tablist">
+                                    @foreach ($users as $user)
+                                    <div class="card">
+                                      <div class="card-header" role="tab" id="headingOne">
+                                          <div class="row">
+                                            <div class="col-md-10">
+                                                <h5 class="mb-0">
+                                                    @if ($user->profile->name === "Student")
+                                                        Alta de alumno: {{$user->file}} - {{$user->name}}
+                                                    @else
+                                                        Alta de tutor: {{$user->file}} - {{$user->name}}
+                                                    @endif
+                                                </h5>
                                             </div>
-                                            <div class="col-2">
-                                                <a href="mailto:{{$student->email}}?subject=Contacto">
-                                                    <button type="button" class="btn btn-outline-info shadow btn-sm">&nbsp;&nbsp;Contactar&nbsp;&nbsp;</button>
-                                                </a>
-                                                <a href="/tracking/{{$student->id}}">
-                                                <button type="button" class="btn btn-outline-info shadow btn-sm">Seguimiento</button>
-                                                </a>
+                                            <div class="col-md-2">
+                                                <div class="row">
+                                                    <form method="post" action="/user/accept" style="margin-right: 5px;">
+                                                        {{ csrf_field() }}
+                                                        <input name="id" type="hidden" value="{{$user->id}}" />
+                                                        <button type="submit" class="btn btn-outline-info btn-block shadow btn-sm">Registrar</button>
+                                                    </form>
+                                                    <form method="post" action="/user/rejected">
+                                                        {{ csrf_field() }}
+                                                        <input name="id" type="hidden" value="{{$user->id}}" />
+                                                        <button type="submit" class="btn btn-outline-info shadow btn-block btn-sm">Rechazar</button>
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </div>                                        
+                                          </div>
+                                        </div>
                                     </div>
+                                    @endforeach
                                 </div>
-                                @endforeach
                             </div>
                         </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="card shadow">
-                    <h4 class="card-header">Actividad Reciente</h4>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            @foreach ($recentActivity as $activity)
-                            <li class="list-group-item">
-                                <a style="text-decoration: none; color: black; border: none;" href="/tracking/{{$activity->user_id}}/edit/{{$activity->id}}">{{$activity->name}}</a>
-                            </li>
-                            @endforeach
-                        </ul>
                     </div>
                 </div>
             </div>

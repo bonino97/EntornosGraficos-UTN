@@ -27,7 +27,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav nav nav-pills mr-auto ml-3">
-            @if ($profile->name === "Student")
+            @if ($user->profile->name === "Student")
               <li class="nav-item">
                 <a class="nav-link" href="/profile">Perfil </a>
               </li>
@@ -38,7 +38,7 @@
                   <a class="nav-link" href="/">Mis Informes</a>
               </li>
             @endif
-            @if ($profile->name === "Tutor")
+            @if ($user->profile->name === "Tutor")
               <li class="nav-item">
                 <a class="nav-link" href="/profile">Perfil </a>
               </li>
@@ -47,20 +47,6 @@
               </li>
             @endif
           </ul>
-          <form class="form-inline mt-2 mt-md-0">
-            <div class="btn-group dropleft">
-                <button type="button" class="btn btn-outline-success btn-sm" data-toggle="dropdown" aria-haspopup="true" style="">
-                  <i class="far fa-bell"></i>
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#"> Notificacion 1 </a>
-                  <a class="dropdown-item" href="#"> Notificacion 2 </a>
-                  <a class="dropdown-item" href="#"> Notificacion 3 </a>
-                </div>
-              </div>
-              &nbsp;
-              <button type="button" class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i></button>
-          </form>
         </div>
       </nav>
     </header>
@@ -114,19 +100,25 @@
                 </div>
             </div>
             <div class="col-lg-3 ">
+              @if ($user->profile->name === "Student")
               <h4 class="mb-4">
                 <form class="form-inline mt-2 mt-md-0" action="/">
                     <input class="form-control mr-sm-2 col-9 mr-1" type="text" name="name" placeholder="Buscar">
                     <button class="btn btn-outline-danger my-2 my-sm-0 col-2" type="submit"><i class="fas fa-search"></i></button>
                 </form>
               </h4>
+              @endif
                 <div class="card shadow">
                     <h4 class="card-header">Actividad Reciente</h4>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
                             @foreach ($recentActivity as $activity)
                                 <li class="list-group-item">
+                                    @if($user->profile->name === "Student")
                                     <a style="text-decoration: none; color: black; border: none;" href="/?name={{$activity->name}}">{{$activity->name}}</a>
+                                    @else
+                                    <a style="text-decoration: none; color: black; border: none;" href="/tracking/{{$activity->user_id}}/edit/{{$activity->id}}">{{$activity->name}}</a>
+                                    @endif
                                 </li>
                             @endforeach
                         </ul>
@@ -135,19 +127,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="./js/vendor/popper.min.js"></script>
-    <script src="./js/bootstrap.min.js"></script>
-    <script>
-        $(".btn-data").click(function() {
-            $(".data").hide();
-            $(".modify").show();
-        });
-    </script>
   </body>
 </html>

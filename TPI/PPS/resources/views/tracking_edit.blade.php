@@ -34,20 +34,6 @@
                 <a class="nav-link" href="/">Alumnos</a>
             </li>
           </ul>
-          <form class="form-inline mt-2 mt-md-0">
-            <div class="btn-group dropleft">
-                <button type="button" class="btn btn-outline-success btn-sm" data-toggle="dropdown" aria-haspopup="true" style="">
-                  <i class="far fa-bell"></i>
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#"> Notificacion 1 </a>
-                  <a class="dropdown-item" href="#"> Notificacion 2 </a>
-                  <a class="dropdown-item" href="#"> Notificacion 3 </a>
-                </div>
-              </div>
-              &nbsp;
-              <button type="button" class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i></button>
-          </form>
         </div>
       </nav>
     </header>
@@ -60,7 +46,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                           <li class="breadcrumb-item"><a href="/">Portada</a></li>
-                          <li class="breadcrumb-item"><a href="#">Seguimiento</a></li>
+                          <li class="breadcrumb-item"><a href="/">Seguimiento</a></li>
                           <li class="breadcrumb-item"><a href="/tracking/{{$student->id}}">{{$student->name}}</a></li>
                           <li class="breadcrumb-item"><a href="/tracking/{{$student->id}}/add">Editar informe</a></li>
                         </ol>
@@ -116,19 +102,9 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="./js/vendor/popper.min.js"></script>
-    <script src="./js/bootstrap.min.js"></script>
   </body>
-
 </html>

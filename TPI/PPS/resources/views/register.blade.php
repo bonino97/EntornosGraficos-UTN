@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Register</title>
+        <title>Registro</title>
         <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('css/login.css') }}" rel="stylesheet">
     </head>
@@ -14,10 +14,12 @@
             {{ csrf_field() }}
             <img class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" alt="" width="200" height="200">
             <label class="sr-only">Nombre</label>
-            <input style="margin-bottom: 10px;" name="name" type="name" class="form-control" placeholder="Nombre" required="" autofocus="">
+            <input style="margin-bottom: 10px;" name="name" type="text" class="form-control" placeholder="Nombre" required="" autofocus="">
+            <label class="sr-only">Legajo</label>
+            <input style="margin-bottom: 10px;" name="file" type="text" class="form-control" placeholder="Legajo" required="" autofocus="">
             <label class="sr-only">Email</label>
             <input style="margin-bottom: 10px;" name="email" type="email" class="form-control" placeholder="Email" required="" autofocus="">
-            <label class="sr-only">Email</label>
+            <label class="sr-only">Perfil</label>
             <select style="margin-bottom: 10px;" name="profile" class="custom-select">
                 <option value="Student">Alumno</option>
                 <option value="Tutor">Tutor</option>

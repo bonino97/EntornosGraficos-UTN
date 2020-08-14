@@ -24,6 +24,12 @@ class UserController extends Controller
         $credentials = $request->only('email', 'password');
         
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if($user->state !== 1) {
+                Auth::logout();
+            }
+
             return redirect('/');
         }
         else
@@ -44,10 +50,15 @@ class UserController extends Controller
         return redirect('/');
     } 
 
+    /**
+     * Register a user
+     *
+     * @param Request
+     */
     public function register(Request $request)
     {
         $profile = ProfileController::getByName($request->profile);
-
+        
         if($profile !== null)
         {
             if($request->password !== $request->repeatPassword)
@@ -59,10 +70,20 @@ class UserController extends Controller
 
             $user->name = $request->name;
             $user->email = $request->email;
+            $user->file = $request->file;
             $user->password = Hash::make($request->password);
             $user->profile_id = $profile->id;
 
             $user->save();
+
+            //Send notification to admin
+            $responsableProfile = ProfileController::getByName("Responsable");
+            $responsables = User::where('profile_id', $responsableProfile->id)->where('state', 1)->get();
+
+            foreach($responsables as $responsable)
+            {
+                NotificationController::store("Nuevo registro: " . $user->name, "/", $responsable->id);
+            }
 
             return redirect('/');
         }
@@ -72,6 +93,11 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Reset password
+     *
+     * @param Request
+     */
     public function resetPassword(Request $request)
     {
         $user = User::where('email', $request->email)->first();
@@ -93,61 +119,372 @@ class UserController extends Controller
     }
 
     /**
+     * Reject user created
+     *
+     * @param Request
+     */
+    public function rejected(Request $request)
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            if($user->profile->name === "Responsable") {
+                $user = User::where('id', $request->id)->first();
+                $user->state = -1;
+                $user->save();
+
+                return redirect('/');
+            }
+            else {
+                Auth::logout();
+                return redirect('/');
+            }
+        }
+        else
+        {
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Accept user created
+     *
+     * @param LoginUser
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function accept(Request $request)
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            if($user->profile->name === "Responsable") {
+                $user = User::where('id', $request->id)->first();
+
+                if($user->profile->name === "Tutor")
+                {
+                    $user->state = 1;
+                    $user->save();
+
+                    return redirect('/');
+                }
+                else
+                {
+                    return redirect('/user/setTutor/' . $user->id);
+                }
+            }
+            else {
+                Auth::logout();
+                return redirect('/');
+            }
+        }
+        else
+        {
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Set tutor to student
+     *
+     * @param Request
+     */
+    public function setTutor(Request $request)
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            if($user->profile->name === "Responsable") {
+                $user = User::where('id', $request->id)->first();   
+                $tutor = User::where('id', $request->tutor)->first();   
+                
+                $user->tutor_id = $tutor->id;
+                $user->state = 1;
+
+                $user->save();
+
+                //Notification to tutor
+                NotificationController::store("Se le ha asignado un nuevo alumno: " . $user->name, "/findStudent?name=" . $user->name, $tutor->id);
+
+                return redirect('/');
+            }
+            else {
+                Auth::logout();
+                return redirect('/');
+            }
+        }
+        else
+        {
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Finish PPS for one user
+     *
+     * @param Request 
+     */
+    public function finishPPS(Request $request)
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            if($user->profile->name === "Responsable") {
+                $user = User::where('id', $request->id)->first();      
+                $user->tutor_id = null;
+                $user->state = 2;
+                $user->save();
+
+                return redirect('/responsable_register');
+            }
+            else {
+                Auth::logout();
+                return redirect('/');
+            }
+        }
+        else
+        {
+            return redirect('/');
+        }
+    }
+
+    /**
      * Update user.
      *
      * @param Request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request)
     {
-        try
-        {
+        if (Auth::check()) {
             $user = Auth::user();
+
+            switch($user->profile->name)
+            {
+                case "Student":
+                    $recentActivity = ReportController::getRecentActivityByUser($user->id);
+
+                    break;
+
+                case "Tutor":
+                    $recentActivity = ReportController::getRecentActivityByTutor($user->id);
+
+                    break;
+            }
+
+            try
+            {
+                $user->name = $request->name;
+                $user->email = $request->email;
         
-            $user->name = $request->name;
-            $user->email = $request->email;
-    
-            $user->save();
-    
-            return view('profile', ["user"=> $user, "message" => "El cambio se guardo con éxito", "color"=> "#28A745", "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
+                $user->save();
+        
+                return view('profile', ["user"=> $user, 
+                                        "message" => "El cambio se guardo con éxito", 
+                                        "color"=> "#28A745", 
+                                        "recentActivity"=> $recentActivity]);
+            }
+            catch(Exception $e)
+            {
+                return view('profile', ["user"=> $user, 
+                                        "message" => "Ócurrio un error guardando los cambios", 
+                                        "color"=> "#DC3545", 
+                                        "recentActivity"=> $recentActivity]);
+            }     
         }
-        catch(Exception $e)
+        else
         {
-            return view('profile', ["user"=> $user, "message" => "Ócurrio un error guardando los cambios", "color"=> "#DC3545", "recentActivity"=> ReportController::getRecentActivityByUser($user->id)]);
-        }        
+            return redirect('/');
+        }   
     }
 
     /**
      * Get one.
      *
      * @param Request
-     * @return \Illuminate\Http\JsonResponse
+     * @return User
      */
     public static function get($id)
     {
-        try
-        {
-            $user = User::where('id', $id)->first();
+        if (Auth::check()) {
+            $user = Auth::user();
 
-            return $user;
+            try
+            {
+                $user = User::where('id', $id)->first();
+
+                return $user;
+            }
+            catch(Exception $e)
+            {
+                return null;
+            }
         }
-        catch(Exception $e)
+        else
         {
-            return null;
-        }             
+            return redirect('/');
+        }
     }
 
-    public static function getStudentByName($name)
+    /**
+     * Get student by name
+     *
+     * @param name
+     * @return User
+     */
+    public static function getStudentByName($name, $tutor_id)
     {
-        try
-        {
-            $users = User::where('name', 'like', '%' . $name .'%')->get();
+        if (Auth::check()) {
+            $user = Auth::user();
 
-            return $users;
+            try
+            {
+                $users = User::where('name', 'like', '%' . $name .'%')->where('tutor_id', $tutor_id)->get();
+
+                return $users;
+            }
+            catch(Exception $e)
+            {
+                return null;
+            }           
         }
-        catch(Exception $e)
+        else
         {
-            return null;
-        }           
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Get new user
+     *
+     * @return User
+     */
+    public static function getNewUsers()
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            if($user->profile->name === "Responsable") {
+                try
+                {
+                    $users = User::where('state', 0)->get();
+
+                    return $users;
+                }
+                catch(Exception $e)
+                {
+                    return null;
+                }         
+            }
+            else {
+                Auth::logout();
+                return redirect('/');
+            }  
+        }
+        else
+        {
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Get tutors
+     *
+     * @return User
+     */
+    public static function getTutors()
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            if($user->profile->name === "Responsable") {
+                try
+                {
+                    $profile = ProfileController::getByName("Tutor");
+
+                    $tutors = User::where('profile_id', $profile->id)->get();
+
+                    return $tutors;
+                }
+                catch(Exception $e)
+                {
+                    return null;
+                }
+            }
+            else {
+                Auth::logout();
+                return redirect('/');
+            }
+        }
+        else
+        {
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Get enabled users
+     *
+     * @return List<User>
+     */
+    public static function getEnableUsers()
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            if($user->profile->name === "Responsable") {
+                try
+                {
+                    $profile = ProfileController::getByName("Student");
+                    $users = User::where('state', 1)->where('profile_id', $profile->id)->get();
+
+                    return $users;
+                }
+                catch(Exception $e)
+                {
+                    return null;
+                }
+            }
+            else {
+                Auth::logout();
+                return redirect('/');
+            }
+        }
+        else
+        {
+            return redirect('/');
+        }
+    }
+
+    /**
+     * Get enabled users
+     *
+     * @return List<User>
+     */
+    public static function getDisabledUsers()
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            if($user->profile->name === "Responsable") {
+                try
+                {
+                    $profile = ProfileController::getByName("Student");
+                    $users = User::where('state', 2)->where('profile_id', $profile->id)->get();
+
+                    return $users;
+                }
+                catch(Exception $e)
+                {
+                    return null;
+                }
+            }
+            else {
+                Auth::logout();
+                return redirect('/');
+            }
+        }
+        else
+        {
+            return redirect('/');
+        }
     }
 }

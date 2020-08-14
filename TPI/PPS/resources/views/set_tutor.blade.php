@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Seguimiento: {{$student->name}}</title>
+    <title>Asignación de tutor: {{$user->name}}</title>
     
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
@@ -46,40 +46,36 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                           <li class="breadcrumb-item"><a href="/">Portada</a></li>
-                          <li class="breadcrumb-item"><a href="#">Seguimiento</a></li>
-                          <li class="breadcrumb-item"><a href="/tracking/{{$student->id}}">{{$student->name}}</a></li>
-                          <li class="breadcrumb-item"><a href="/tracking/{{$student->id}}/add">Agregar informe</a></li>
+                          <li class="breadcrumb-item"><a href="/">Nuevas solicitudes</a></li>
+                          <li class="breadcrumb-item"><a href="/user/setTutor/{{$user->id}}">{{$user->name}}</a></li>
                         </ol>
                     </nav>
                     <div class="card-body col-6" >
                       <div class="card-header">
-                        Agregar informe al alumno: {{$student->name}}
+                        Asignar tutor a {{$user->name}}
                       </div>
                         <div style="padding: 20px; background: #f7f7f7" class="shadow">
                             <div class="container">
-                                <form action="/report/store" method="post">
-                                  {{ csrf_field() }}
-                                  <input name="user_id"  type="hidden" value="{{$student->id}}" />
-                                  <div class="input-group mb-3">
-                                      <div class="input-group-prepend">
-                                          <span class="input-group-text" id="inputGroup-sizing-default">Titulo</span>
-                                      </div>
-                                      <input name="title" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                                  </div>
-                                  <div class="input-group mb-3">
-                                      <div class="input-group-prepend">
-                                          <span class="input-group-text" id="inputGroup-sizing-default">Consigna:</span>
-                                      </div>
-                                      <input name="slogan" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                                  </div>
-                                  <div class="text-right">
-                                      <button type="submit" class="btn btn-success end">Guardar</button>
-                                  </div>
+                                <form method="post" action="/user/setTutor">
+                                    {{ csrf_field() }}
+                                    <input name="id" type="hidden" value="{{$user->id}}" />
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">Tutor</span>
+                                        </div>
+                                        <select name="tutor" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                            @foreach($tutors as $tutor)
+                                                <option value="{{$tutor->id}}">{{$tutor->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="text-right">
+                                        <button type="submit" class="btn btn-success end">Asginar</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
