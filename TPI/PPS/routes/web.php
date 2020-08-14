@@ -46,19 +46,17 @@ Route::get('/', function (Request $request) {
                                         "recentActivity" => $recentActivity]);
             
                 case "Tutor":
-                    if($request->name) {
-                        $recentActivity = ReportController::getByNameAndTutor($request->name, $user->id);
-                    }
-                    else {
-                        $recentActivity = ReportController::getRecentActivityByTutor($user->id);
-                    }                    
+                    $recentActivity = ReportController::getRecentActivityByTutor($user->id);                 
 
-                    return view('tutor', ["notifications" => $user->notifications, "students" => $user->students, "recentActivity" => $recentActivity]);
+                    return view('tutor', ["notifications" => $user->notifications, 
+                                          "students" => $user->students, 
+                                          "recentActivity" => $recentActivity]);
 
                 case "Responsable":
                     $users = UserController::getNewUsers();
 
-                    return view('responsable', ["notifications" => $user->notifications, "users" => $users]);
+                    return view('responsable', ["notifications" => $user->notifications, 
+                                                "users" => $users]);
         }
     }
     else
@@ -72,16 +70,12 @@ Route::get('/findStudent', function (Request $request) {
         $user = Auth::user();
 
         if($user->profile->name === "Tutor") {
-            if($request->name) {
-                $recentActivity = ReportController::getByNameAndTutor($request->name, $user->id);
-            }
-            else {
-                $recentActivity = ReportController::getRecentActivityByTutor($user->id);
-            }
-
             $students = UserController::getStudentByName($request->name, $user->id);
+            $recentActivity = ReportController::getRecentActivityByTutor($user->id);
     
-            return view('tutor', ["notifications" => $user->notifications, "students" => $students, "recentActivity" => $recentActivity]);
+            return view('tutor', ["notifications" => $user->notifications, 
+                                  "students" => $students, 
+                                  "recentActivity" => $recentActivity]);
         }
         else {
             Auth::logout();
@@ -149,7 +143,8 @@ Route::get('/tracking/{id}', function ($id) {
         if($user->profile->name === "Tutor") {
             $student = UserController::get($id);
 
-            return view('tracking', ['student'=> $student]);   
+            return view('tracking', ['student'=> $student, 
+                                     'message' => '']);   
         }
         else {
             Auth::logout();
@@ -169,7 +164,8 @@ Route::get('/tracking/{id}/add', function ($id) {
         if($user->profile->name === "Tutor") {
             $student = UserController::get($id);
     
-            return view('tracking_add', ['student'=> $student]);   
+            return view('tracking_add', ['student'=> $student,
+                                         'error' => '']);   
         }
         else {
             Auth::logout();
@@ -190,7 +186,10 @@ Route::get('/tracking/{user_id}/edit/{report_id}', function ($user_id, $report_i
             $student = UserController::get($user_id);
             $report = ReportController::get($report_id);
     
-            return view('tracking_edit', ['student'=> $student, 'report'=>$report]);   
+            return view('tracking_edit', ['student'=> $student, 
+                                          'report'=>$report,
+                                          'message' => '',
+                                          'colorMessage' => '']);   
         }
         else {
             Auth::logout();

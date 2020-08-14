@@ -73,11 +73,11 @@
                                         <div class="card-body">
                                             <ul class="list-group list-group-flush">
                                                 <li class="list-group-item">
-                                                    <input name="name" class="form-control modify" type="text" placeholder="Nombre" value="{{ $user->name }}">
+                                                    <input name="name" class="form-control modify" type="text" placeholder="Nombre" value="{{ $user->name }}" required>
                                                     <h5 class="card-title text-center data">{{ $user->name }}</h5>
                                                 </li>
                                                 <li class="list-group-item">
-                                                    <input name="email" class="form-control modify" type="text" placeholder="Email" value="{{ $user->email }}">
+                                                    <input name="email" class="form-control modify" type="email" placeholder="Email" value="{{ $user->email }}" required>
                                                     <p class="card-title text-center data">{{ $user->email }}</p>
                                                 </li>
                                                 <li class="list-group-item">
@@ -127,5 +127,15 @@
             </div>
         </div>
     </div>
+      <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>
+        $(".btn-data").click(function() {
+            $(".data").hide();
+            $(".modify").show();
+        });
+    </script>
   </body>
 </html>

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Report extends Model
 {
@@ -15,5 +16,13 @@ class Report extends Model
         'name', 'slogan', 'state', 'grade', 'comments', 'file', 'user_id'
     ];
 
-    //Falta la foreing key de id_user con el usuario
+    /**
+     * Get student of the report.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

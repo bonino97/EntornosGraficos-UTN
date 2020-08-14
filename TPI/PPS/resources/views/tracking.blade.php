@@ -55,6 +55,9 @@
                         <a href="/tracking/{{$student->id}}/add">
                           <button type="button" class="btn btn-primary">Nuevo</button>
                         </a>
+                        @if($message)
+                        <p style="color: #28A745; display: initial; margin-left: 10px;">{{$message}}</p>
+                        @endif
                       </div>
                         <div class="jumbotron jumbotron-fluid shadow">
                             <div class="container">

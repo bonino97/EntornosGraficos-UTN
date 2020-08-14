@@ -59,11 +59,29 @@ class UserController extends Controller
     {
         $profile = ProfileController::getByName($request->profile);
         
-        if($profile !== null)
-        {
-            if($request->password !== $request->repeatPassword)
-            {
-                return view('register', ['error' => 'Las claves no coinciden', 'message' => '']);
+        if($profile !== null) {
+            if(!$request->title) {
+                return view('register', ['error' => 'El titulo no puede ser vacío']);
+            }
+
+            if(!$request->file) {
+                return view('register', ['error' => 'El legajo no puede ser vacío']);
+            }
+
+            if(!$request->email) {
+                return view('register', ['error' => 'El email no puede ser vacío']);
+            }
+
+            if(!$request->password) {
+                return view('register', ['error' => 'La clave no puede ser vacía']);
+            }
+
+            if(!$request->repeatPassword) {
+                return view('register', ['error' => 'La conrimación de clave no puede ser vacía']);
+            }
+
+            if($request->password !== $request->repeatPassword) {
+                return view('register', ['error' => 'Las claves no coinciden']);
             }
 
             $user = new User();
@@ -272,6 +290,20 @@ class UserController extends Controller
 
             try
             {
+                if(!$request->name) {
+                    return view('profile', ["user"=> $user, 
+                                            "message" => "El nombre no puede ser vacío", 
+                                            "color"=> "#DC3545", 
+                                            "recentActivity"=> $recentActivity]);   
+                }
+
+                if(!$request->email) {
+                    return view('profile', ["user"=> $user, 
+                                            "message" => "El email no puede ser vacío", 
+                                            "color"=> "#DC3545", 
+                                            "recentActivity"=> $recentActivity]);   
+                }
+
                 $user->name = $request->name;
                 $user->email = $request->email;
         

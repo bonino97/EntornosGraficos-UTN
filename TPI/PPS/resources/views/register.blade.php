@@ -16,7 +16,7 @@
             <label class="sr-only">Nombre</label>
             <input style="margin-bottom: 10px;" name="name" type="text" class="form-control" placeholder="Nombre" required="" autofocus="">
             <label class="sr-only">Legajo</label>
-            <input style="margin-bottom: 10px;" name="file" type="text" class="form-control" placeholder="Legajo" required="" autofocus="">
+            <input style="margin-bottom: 10px;" name="file" type="number" class="form-control" placeholder="Legajo" required="" autofocus="">
             <label class="sr-only">Email</label>
             <input style="margin-bottom: 10px;" name="email" type="email" class="form-control" placeholder="Email" required="" autofocus="">
             <label class="sr-only">Perfil</label>

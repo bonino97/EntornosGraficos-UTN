@@ -65,13 +65,13 @@
                                       <div class="input-group-prepend">
                                           <span class="input-group-text" id="inputGroup-sizing-default">Titulo</span>
                                       </div>
-                                      <input value="{{$report->name}}" name="title" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                      <input value="{{$report->name}}" name="title" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
                                   </div>
                                   <div class="input-group mb-3">
                                       <div class="input-group-prepend">
                                           <span class="input-group-text" id="inputGroup-sizing-default">Consigna:</span>
                                       </div>
-                                      <input value="{{$report->slogan}}" name="slogan" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                      <input value="{{$report->slogan}}" name="slogan" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
                                   </div>
                                   <div class="input-group mb-3">
                                       <div class="input-group-prepend">
@@ -95,6 +95,9 @@
                                         <option value="A corregir">A corregir</option>
                                     </select>
                                   </div>
+                                  @if($message)
+                                    <p style="color: {{$colorMessage}}">{{ $message }}</p>
+                                  @endif
                                   <div class="text-right">
                                       <button type="submit" class="btn btn-success end">Guardar</button>
                                   </div>

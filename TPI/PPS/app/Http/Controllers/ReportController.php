@@ -19,18 +19,37 @@ class ReportController extends Controller
         if (Auth::check()) {
             try
             {
-                $report = new Report;
+                $tutor = Auth::user();
+                $student = UserController::get($request->user_id);
 
-                $report->fill([
-                    'name' => $request->input('title'),
-                    'slogan' => $request->input('slogan'),
-                    'user_id' => $request->input('user_id'),
-                    'state' => 'Asignada'
-                ]);
-        
+                if(!$request->user_id) {
+                    return redirect('/');
+                }
+
+                if(!$request->title) {
+                    return view('tracking_add', ['student'=> $student,
+                                                 'error' => 'El título no puede ser vacío.']);   
+                }
+
+                if(!$request->slogan) {
+                    return view('tracking_add', ['student'=> $student,
+                                                 'error' => 'La consigna no puede ser vacía.']);   
+                }
+
+                if($tutor->id !== $student->tutor_id) {
+                    Auth::logout();
+                    return redirect('/');   
+                }
+
+                $report = new Report;
+                $report->name = $request->title;
+                $report->slogan = $request->slogan;
+                $report->user_id = $request->user_id;
+                $report->state = 'Asignada';
                 $report->save();
 
-                return redirect('/tracking/' . $request->user_id);
+                return view('tracking', ['student'=> $student, 
+                                         'message' => 'El informe se creo con éxito.']);   
             }
             catch(Exception $e)
             {
@@ -52,10 +71,19 @@ class ReportController extends Controller
     public function remove(Request $request)
     {
         if (Auth::check()) {
+            $tutor = Auth::user();
             $report = Report::where('id', $request->id)->first();
+            $student = $report->student;
+
+            if($student->tutor_id !== $tutor->id) {
+                Auth::logout();
+                return redirect('/');   
+            }
+
             $report->delete();
 
-            return redirect('/tracking/' . $request->id);   
+            return view('tracking', ['student'=> $student, 
+                                     'message' => 'El informe se elminio con éxito.']);   
         }
         else
         {
@@ -71,12 +99,36 @@ class ReportController extends Controller
     public function edit(Request $request)
     {
         if (Auth::check()) {
-            $user = Auth::user();
+            $tutor = Auth::user();
 
-            if($user->profile->name === "Tutor") {
+            if($tutor->profile->name === "Tutor") {
                 try
                 {
                     $report = Report::where('id', $request->report_id)->first();
+                    $student = $report->student;
+
+                    if(!$request->report_id) {
+                        return redirect('/');
+                    }
+
+                    if($student->tutor_id !== $tutor->id) {
+                        Auth::logout();
+                        return redirect('/');   
+                    }
+    
+                    if(!$request->title) {
+                        return view('tracking_edit', ['student'=> $student, 
+                                                      'report'=>$report,
+                                                      'message' => 'El titulo no puede ser vacío.',
+                                                      'colorMessage' => '#CE6161']);   
+                    }
+
+                    if(!$request->slogan) {
+                        return view('tracking_edit', ['student'=> $student, 
+                                                      'report'=>$report,
+                                                      'message' => 'La consigna no puede ser vacía.',
+                                                      'colorMessage' => '#CE6161']);   
+                    }
                 
                     $report->name = $request->title;
                     $report->slogan = $request->slogan;
@@ -87,7 +139,10 @@ class ReportController extends Controller
 
                     NotificationController::store('El tutor realizo correciones del informe "' . $report->name . '"', "/?name=" . $report->name, $report->user_id);
 
-                    return redirect('/tracking/' . $request->user_id);   
+                    return view('tracking_edit', ['student'=> $student, 
+                                                  'report'=>$report,
+                                                  'message' => 'Se realizaron los cambios con éxito.',
+                                                  'colorMessage' => '#28A745']);   
                 }
                 catch(Exception $e)
                 {
