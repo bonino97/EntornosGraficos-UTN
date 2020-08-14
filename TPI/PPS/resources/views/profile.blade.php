@@ -138,4 +138,47 @@
         });
     </script>
   </body>
+  <footer class="page-footer font-small p-3 mt-1" style="background-color: grey;">
+
+    <!-- Footer Links -->
+    <div class="container-fluid text-center text-md-left">
+  
+      <!-- Grid row -->
+      <div class="row">
+  
+        <!-- Grid column -->
+        <div class="col-md-4 mt-md-0 text-center">
+  
+          <!-- Content -->
+          <p class="text-uppercase text-white">Facultad Regional Rosario</p>
+          <p class="text-white">Universidad Tecnologica Nacional</p>
+  
+        </div>
+        <!-- Grid column -->
+  
+        <hr class="clearfix w-100 d-md-none pb-3">
+
+        <!-- Grid column -->
+
+        <div class="col-md-4  text-center">
+  
+          <p class="text-uppercase text-white">ZEBALLOS 1341 - S2000BQA - ROSARIO</p>
+          
+  
+        </div>
+  
+        <!-- Grid column -->
+        <div class="col-md-4">
+  
+          <p class="text-white"> Telefono directo: 0341-4481871</p>
+          <p class="text-white">Correo electronico: ppsregionalrosario@frro.utn.edu.ar</p>
+  
+        </div>
+        <!-- Grid column -->
+  
+      </div>
+      <!-- Grid row -->
+  
+    </div>
+  </footer>
 </html>
