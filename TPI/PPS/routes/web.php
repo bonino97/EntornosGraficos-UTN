@@ -41,27 +41,27 @@ Route::get('/', function (Request $request) {
                     $reports = $user->reports;
                 }
                 
-                return view('student', ["notifications" => $user->notifications, 
+                return view('student', ["user" => $user, 
                                         "reports" => $reports, 
                                         "recentActivity" => $recentActivity]);
             
                 case "Tutor":
                     $recentActivity = ReportController::getRecentActivityByTutor($user->id);                 
 
-                    return view('tutor', ["notifications" => $user->notifications, 
+                    return view('tutor', ["user" => $user, 
                                           "students" => $user->students, 
                                           "recentActivity" => $recentActivity]);
 
                 case "Responsable":
                     $users = UserController::getNewUsers();
 
-                    return view('responsable', ["notifications" => $user->notifications, 
+                    return view('responsable', ["user" => $user, 
                                                 "users" => $users]);
         }
     }
     else
     {
-        return view('login', ["error"=> ""]);
+        return view('login', ['error'=> '', 'message' => '']);
     }
 });
 
@@ -114,7 +114,7 @@ Route::get('/profile', function () {
     }
     else
     {
-        return view('login', ["error"=> ""]);
+        return view('login', ['error'=> '', 'message' => '']);
     }
 });
 
@@ -132,7 +132,7 @@ Route::get('/tutor', function () {
     }
     else
     {
-        return view('login', ["error"=> ""]);
+        return view('login', ['error'=> '', 'message' => '']);
     }
 });
 
@@ -241,6 +241,15 @@ Route::get('/user/setTutor/{user_id}', function ($user_id) {
     else
     {
         return redirect('/');
+    }
+});
+
+Route::get('/user/readNotifications/{user_id}', function($user_id) {
+    $user = UserController::get($user_id);
+
+    foreach($user->notifications as $notification) {
+        $notification->isReaded = 1;
+        $notification->save();
     }
 });
 

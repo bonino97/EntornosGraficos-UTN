@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Utils\Enums\Status;
 use App\User;
+use Mail;
 
 class UserController extends Controller
 {
@@ -34,7 +35,7 @@ class UserController extends Controller
         }
         else
         {
-            return view('login', ["error"=> "Los datos no son correctos"]);
+            return view('login', ['error'=> 'Los datos no son correctos', 'message' => '']);
         }
     }
 
@@ -118,21 +119,36 @@ class UserController extends Controller
      */
     public function resetPassword(Request $request)
     {
-        $user = User::where('email', $request->email)->first();
+        try
+        {
+            $user = User::where('email', $request->email)->first();
         
-        if($user !== null)
-        {
-            $newPassword = Str::random(8);
-            
-            $user->password = Hash::make($newPassword);
+            if($user !== null)
+            {
+                $newPassword = Str::random(8);
 
-            $user->save();
-            //TODO Falta mandar el mail
-            return redirect('/');
+                //Send mail
+                $subject = 'Reseteo de clave PPS Web';
+                $for = $user->email;
+
+                $user->password = Hash::make($newPassword);
+    
+                $user->save();
+
+                Mail::send('/login', ['error' => '', 'message' => 'Se envio por email la nueva clave'], function($msj) use($subject,$for){
+                    $msj->from("ppswebutn@gmail.com","PPS");
+                    $msj->subject($subject);
+                    $msj->to($for);
+                });
+            }
+            else
+            {
+                return view('login', ['error'=> 'El email ingresado no pertenece a ningun usuario', 'message' => '']);
+            }
         }
-        else
+        catch(Exception $ex)
         {
-            return view('login', ["error"=> "El email ingresado no pertenece a ningun usuario"]);
+            return view('login', ['error'=> 'Ócurrio un error reseteando la clave, reintente.', 'message' => '']);
         }
     }
 

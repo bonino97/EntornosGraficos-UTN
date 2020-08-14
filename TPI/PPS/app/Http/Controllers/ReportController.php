@@ -17,15 +17,15 @@ class ReportController extends Controller
     public function store(Request $request)
     {
         if (Auth::check()) {
+            $tutor = Auth::user();
+            $student = UserController::get($request->user_id);
+
+            if(!$request->user_id) {
+                return redirect('/');
+            }
+
             try
             {
-                $tutor = Auth::user();
-                $student = UserController::get($request->user_id);
-
-                if(!$request->user_id) {
-                    return redirect('/');
-                }
-
                 if(!$request->title) {
                     return view('tracking_add', ['student'=> $student,
                                                  'error' => 'El título no puede ser vacío.']);   
@@ -53,8 +53,8 @@ class ReportController extends Controller
             }
             catch(Exception $e)
             {
-                //TODO Falta validación
-                return false;
+                return view('tracking_add', ['student'=> $student,
+                                             'error' => 'Ócurrio un error creando el informe.']);   
             }        
         }
         else

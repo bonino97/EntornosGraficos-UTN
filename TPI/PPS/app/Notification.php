@@ -12,6 +12,6 @@ class Notification extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'url', 'user_id'
+        'title', 'url', 'user_id', 'isReaded'
     ];
 }

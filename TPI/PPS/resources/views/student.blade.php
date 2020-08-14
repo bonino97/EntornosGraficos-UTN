@@ -19,7 +19,9 @@
     <header>
       <!-- Fixed navbar -->
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <img class="img-thumbnail mb-0" src="{{ asset('images/utn.jpg') }}" width="35" height="35">
+        <a href="/">
+          <img alt="UTN" title="UTN" class="img-thumbnail mb-0" src="{{ asset('images/utn.jpg') }}" width="35" height="35">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -36,11 +38,11 @@
             </li>
           </ul>
             <div class="btn-group dropleft">
-            <button type="button" class="btn btn-outline-success btn-sm" data-toggle="dropdown" aria-haspopup="true" style="">
+            <button alt="Notificaciones" title="Notificaciones" id="notificationButton" type="button" class="btn btn-outline-success btn-sm @if (count($user->notifications) > 0) hasNotifications @endif" data-toggle="dropdown" aria-haspopup="true">
                 <i class="far fa-bell"></i>
             </button>
             <div class="dropdown-menu">
-                @foreach($notifications as $notification)
+                @foreach($user->notifications as $notification)
                   <a class="dropdown-item" href="{{$notification->url}}">{{$notification->title}}</a>
                 @endforeach
             </div>
@@ -48,7 +50,7 @@
             &nbsp;
             <form action="/logout" method="post">
                 {{ csrf_field() }}
-                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i></button>
+                <button alt="Cerrar sesión" title="Cerrar sesión" type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i></button>
             </form>
         </div>
       </nav>
@@ -133,19 +135,7 @@
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/popper.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script>
-      function showButtonSave(input) {
-        if(input) {
-          $($(input.parentElement.parentElement).find('.save-file')[0]).show();
-        }
-      }
-    </script>
-  </body>
-  <footer class="page-footer font-small p-3 mt-1" style="background-color: grey;">
+    <footer class="page-footer font-small p-3 mt-1 fixed-bottom" style="background-color: grey;">
 
     <!-- Footer Links -->
     <div class="container-fluid text-center text-md-left">
@@ -189,4 +179,20 @@
     </div>
   </footer>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script>
+      $("#notificationButton").click(function() {
+        $("#notificationButton").removeClass("hasNotifications");
+        $.get("/user/readNotifications/{{$user->id}}");
+      });
+
+      function showButtonSave(input) {
+        if(input) {
+          $($(input.parentElement.parentElement).find('.save-file')[0]).show();
+        }
+      }
+    </script>
+  </body>
 </html>

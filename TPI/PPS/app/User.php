@@ -87,6 +87,6 @@ class User extends Authenticatable
      */
     public function notifications()
     {
-        return $this->hasMany(Notification::class)->latest();
+        return $this->hasMany(Notification::class)->where('isReaded', 0)->latest();
     }
 }

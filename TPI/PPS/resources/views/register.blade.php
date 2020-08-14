@@ -12,7 +12,7 @@
     <body class="text-center">
         <form id="registerForm" class="form-signin shadow" action="/register" method="post">
             {{ csrf_field() }}
-            <img class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" alt="" width="200" height="200">
+            <img alt="UTN" title="UTN" class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" alt="" width="200" height="200">
             <label class="sr-only">Nombre</label>
             <input style="margin-bottom: 10px;" name="name" type="text" class="form-control" placeholder="Nombre" required="" autofocus="">
             <label class="sr-only">Legajo</label>

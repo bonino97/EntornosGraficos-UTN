@@ -12,12 +12,13 @@
     <body class="text-center">
         <form id="loginForm" class="form-signin shadow" action="/login" method="post">
         {{ csrf_field() }}
-        <img class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" alt="" width="200" height="200">
+        <img alt="UTN" title="UTN" class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" alt="" width="200" height="200">
         <label class="sr-only">Email</label>
         <input name="email" type="email" class="form-control" placeholder="Email" required="" autofocus="">
         <label for="inputPassword" class="sr-only">Password</label>
         <input name="password" type="password" class="form-control" placeholder="Password" required="">
         <p style="color: #CE6161;">{{ $error }}</p>
+        <p style="color: #28A745;">{{ $message }}</p>
         <div class="checkbox mb-3">
             <a id="forgetPassword" href="javascript:void(0)" >¿Olvidaste tu contraseña?</a>
         </div>

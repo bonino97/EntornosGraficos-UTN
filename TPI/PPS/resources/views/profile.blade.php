@@ -21,7 +21,9 @@
     <header>
       <!-- Fixed navbar -->
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <img class="img-thumbnail mb-0" src="{{ asset('images/utn.jpg') }}" width="35" height="35">
+        <a href="/">
+          <img alt="UTN" title="UTN" class="img-thumbnail mb-0" src="{{ asset('images/utn.jpg') }}" width="35" height="35">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -127,18 +129,7 @@
             </div>
         </div>
     </div>
-      <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script>
-        $(".btn-data").click(function() {
-            $(".data").hide();
-            $(".modify").show();
-        });
-    </script>
-  </body>
-  <footer class="page-footer font-small p-3 mt-1" style="background-color: grey;">
+    <footer class="page-footer font-small p-3 mt-1" style="background-color: grey;">
 
     <!-- Footer Links -->
     <div class="container-fluid text-center text-md-left">
@@ -181,4 +172,15 @@
   
     </div>
   </footer>
+      <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>
+        $(".btn-data").click(function() {
+            $(".data").hide();
+            $(".modify").show();
+        });
+    </script>
+  </body>
 </html>

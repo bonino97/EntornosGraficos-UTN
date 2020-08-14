@@ -43,3 +43,7 @@ html {
   .save-file {
     display: none;
   }
+  
+  .hasNotifications {
+    background: #D8CA4B !important;
+  }
