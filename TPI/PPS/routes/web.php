@@ -73,7 +73,7 @@ Route::get('/findStudent', function (Request $request) {
             $students = UserController::getStudentByName($request->name, $user->id);
             $recentActivity = ReportController::getRecentActivityByTutor($user->id);
     
-            return view('tutor', ["notifications" => $user->notifications, 
+            return view('tutor', ["user" => $user, 
                                   "students" => $students, 
                                   "recentActivity" => $recentActivity]);
         }

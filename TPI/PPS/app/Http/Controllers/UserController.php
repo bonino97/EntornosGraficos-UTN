@@ -61,7 +61,7 @@ class UserController extends Controller
         $profile = ProfileController::getByName($request->profile);
         
         if($profile !== null) {
-            if(!$request->title) {
+            if(!$request->name) {
                 return view('register', ['error' => 'El titulo no puede ser vacío']);
             }
 
