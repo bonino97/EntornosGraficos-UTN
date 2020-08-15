@@ -83,9 +83,9 @@ return [
     |
     */
  
-    'username' => env('ppswebutn@gmail.com'),
+    'username' => env('MAIL_USERNAME','ppswebutn@gmail.com'),
  
-    'password' => env('aqws1234'),
+    'password' => env('MAIL_PASSWORD','aqws1234'),
  
     /*
     |--------------------------------------------------------------------------
