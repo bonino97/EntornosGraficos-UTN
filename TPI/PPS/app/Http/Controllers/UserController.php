@@ -29,6 +29,8 @@ class UserController extends Controller
 
             if($user->state !== 1) {
                 Auth::logout();
+
+                return view('login', ['error'=> 'Tu usuario aún no fue autorizado por el administrador.', 'message' => '']);
             }
 
             return redirect('/');
@@ -135,11 +137,13 @@ class UserController extends Controller
     
                 $user->save();
 
-                Mail::send('/login', ['error' => '', 'message' => 'Se envio por email la nueva clave'], function($msj) use($subject,$for){
+                Mail::send('/reset_password', ['password' => $newPassword], function($msj) use($subject,$for){
                     $msj->from("ppswebutn@gmail.com","PPS");
                     $msj->subject($subject);
                     $msj->to($for);
                 });
+
+                return view('login', ['error'=> '', 'message' => 'Enviamos tu nueva clave a tu email.']);
             }
             else
             {
