@@ -25,7 +25,7 @@
         </div>
         <div class="row">
             <div class="col-sm-6 btn-group-sm">
-                <a class="btn btn-lg btn-outline-secondary btn-block" href="/register" type="button">Crear Cuenta</a>
+                <a class="btn btn-lg btn-outline-secondary btn-block" href="/register">Crear Cuenta</a>
             </div>
             <div class="col-sm-6 btn-group-sm">
                 <button class="btn btn-lg btn-outline-secondary btn-block" type="submit">Iniciar Sesion</button>
