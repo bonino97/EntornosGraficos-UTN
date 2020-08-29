@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="utf-8">
@@ -12,10 +13,10 @@
     <body class="text-center">
         <form id="loginForm" class="form-signin shadow" action="/login" method="post">
         {{ csrf_field() }}
-        <img alt="UTN" title="UTN" class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" alt="" width="200" height="200">
+        <img alt="UTN" title="UTN" class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" width="200" height="200">
         <label class="sr-only">Email</label>
         <input name="email" type="email" class="form-control" placeholder="Email" required="" autofocus="">
-        <label for="inputPassword" class="sr-only">Password</label>
+        <label class="sr-only">Password</label>
         <input name="password" type="password" class="form-control" placeholder="Password" required="">
         <p style="color: #CE6161;">{{ $error }}</p>
         <p style="color: #28A745;">{{ $message }}</p>
@@ -60,7 +61,7 @@
         </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
-    <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
     <script>
         $('#forgetPassword').on('click', function () {
             $('#myModal').modal('show');
