@@ -6,8 +6,8 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>Login</title>
-        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">
+        <link href="{{ asset('css/login.css') }}" type="text/css" rel="stylesheet">
     </head>
 
     <body class="text-center">
