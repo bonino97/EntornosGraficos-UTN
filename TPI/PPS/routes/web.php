@@ -19,6 +19,14 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/site-map', function(Request $request) {
+    if (Auth::check()) {
+        return view('site_map', ['user' => Auth::user()]);
+    }
+    else {
+        return view('login');
+    }
+});
 
 Route::get('/register', function(Request $request) {
     return view('register', ['error' => '', 'message' => '']);

@@ -38,6 +38,11 @@
             </li>
           </ul>
             <div class="btn-group dropleft">
+            <a href="/site-map">
+              <button alt="Mapa de sitio" title="Mapa de sitio"  type="button" class="btn btn-outline-warning btn-sm" style="margin-right: 3px;">
+                  <i class="fas fa-sitemap"></i>
+              </button>
+            </a>
             <button alt="Notificaciones" title="Notificaciones" id="notificationButton" type="button" class="btn btn-outline-success btn-sm @if (count($user->notifications) > 0) hasNotifications @endif" data-toggle="dropdown" aria-haspopup="true">
                 <i class="far fa-bell"></i>
             </button>
@@ -85,11 +90,6 @@
                                     <ul class="list-group list-group-flush">
                                     <li class="list-group-item">Consigna: {{$report->slogan}}</li>
                                       <li class="list-group-item">Estado: {{$report->state}}</li>
-                                      @if ($report->grade === null)
-                                        <li class="list-group-item">Nota: -</li>
-                                      @else
-                                        <li class="list-group-item">Nota: {{$report->grade}}</li>
-                                      @endif
                                       <li class="list-group-item">Comentarios: {{$report->comments}}</li>
                                       @if ($report->state === "A corregir")
                                         <li class="list-group-item">Archivo: <a href="/storage/{{$report->file}}">{{$report->file}}</a></li>

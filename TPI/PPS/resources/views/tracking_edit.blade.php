@@ -77,12 +77,6 @@
                                   </div>
                                   <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                          <span class="input-group-text" id="inputGroup-sizing-default">Nota:</span>
-                                      </div>
-                                      <input value="{{$report->grade}}" name="grade" type="number" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
-                                  </div>
-                                  <div class="input-group mb-3">
-                                      <div class="input-group-prepend">
                                           <span class="input-group-text" id="inputGroup-sizing-default">Comentarios:</span>
                                       </div>
                                       <input value="{{$report->comments}}" name="comments" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">

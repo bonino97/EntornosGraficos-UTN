@@ -132,7 +132,6 @@ class ReportController extends Controller
                 
                     $report->name = $request->title;
                     $report->slogan = $request->slogan;
-                    $report->grade = $request->grade;
                     $report->comments = $request->comments;
                     $report->state = $request->state;
                     $report->save();

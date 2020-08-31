@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Login</title>
+        <title>Login a PPS</title>
         <link href="{{ asset('css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">
         <link href="{{ asset('css/login.css') }}" type="text/css" rel="stylesheet">
     </head>
@@ -13,11 +13,11 @@
     <body class="text-center">
         <form id="loginForm" class="form-signin shadow" action="/login" method="post">
         {{ csrf_field() }}
-        <img alt="UTN" title="UTN" class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" width="200" height="200">
-        <label class="sr-only">Email</label>
-        <input name="email" type="email" class="form-control" placeholder="Email" required="" autofocus="">
-        <label class="sr-only">Password</label>
-        <input name="password" type="password" class="form-control" placeholder="Password" required="">
+        <img alt="UTN" title="Logo de la UTN" class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" width="200" height="200">
+        <label for="email" class="sr-only">Email</label>
+        <input id="email" name="email" type="email" class="form-control" placeholder="Email" required="" autofocus="">
+        <label for="password" class="sr-only">Password</label>
+        <input id="password" name="password" type="password" class="form-control" placeholder="Password" required="">
         <p style="color: #CE6161;">{{ $error }}</p>
         <p style="color: #28A745;">{{ $message }}</p>
         <div class="checkbox mb-3">
@@ -46,10 +46,10 @@
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
+                        <div class="input-group-prepend">
+                                <span class="input-group-text" for="email_reset_password" id="inputGroup-sizing-default">Email</span>
                             </div>
-                            <input name="email" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                            <input id="email_reset_password" name="email_reset_password" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -89,11 +89,6 @@
                                     <ul class="list-group list-group-flush">
                                     <li class="list-group-item">Consigna: {{$report->slogan}}</li>
                                         <li class="list-group-item">Estado: {{$report->state}}</li>
-                                        @if ($report->grade === null)
-                                            <li class="list-group-item">Nota: -</li>
-                                        @else
-                                            <li class="list-group-item">Nota: {{$report->grade}}</li>
-                                        @endif
                                         @if ($report->comments === null)
                                           <li class="list-group-item">Comentarios: -</li>
                                         @else

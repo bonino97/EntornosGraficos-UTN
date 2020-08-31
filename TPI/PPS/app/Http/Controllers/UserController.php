@@ -87,6 +87,10 @@ class UserController extends Controller
                 return view('register', ['error' => 'Las claves no coinciden']);
             }
 
+            if (User::where('email', $request->email)->exists()) {
+                return view('register', ['error' => 'El email ya se encuentra registrado']);
+             }
+
             $user = new User();
 
             $user->name = $request->name;

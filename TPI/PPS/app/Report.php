@@ -13,7 +13,7 @@ class Report extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'slogan', 'state', 'grade', 'comments', 'file', 'user_id'
+        'name', 'slogan', 'state', 'comments', 'file', 'user_id'
     ];
 
     /**

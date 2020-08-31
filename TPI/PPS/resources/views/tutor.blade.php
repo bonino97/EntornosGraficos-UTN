@@ -38,6 +38,11 @@
             </li>
           </ul>
           <form class="form-inline mt-2 mt-md-0">
+            <a href="/site-map">
+              <button alt="Mapa de sitio" title="Mapa de sitio"  type="button" class="btn btn-outline-warning btn-sm" style="margin-right: 3px;">
+                  <i class="fas fa-sitemap"></i>
+              </button>
+            </a>
             <div class="btn-group dropleft">
                 <button alt="Notificaciones" title="Notificaciones" id="notificationButton" type="button" class="btn btn-outline-success btn-sm @if (count($user->notifications) > 0) hasNotifications @endif" data-toggle="dropdown" aria-haspopup="true">
                     <i class="far fa-bell"></i>
