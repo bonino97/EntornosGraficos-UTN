@@ -72,7 +72,7 @@
                                         </select>
                                     </div>
                                     <div class="text-right">
-                                        <button type="submit" class="btn btn-success end">Asginar</button>
+                                        <button type="submit" class="btn btn-success end">Asignar</button>
                                     </div>
                                 </form>
                             </div>
