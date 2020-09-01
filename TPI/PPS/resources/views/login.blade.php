@@ -13,11 +13,11 @@
     <body class="text-center">
         <form id="loginForm" class="form-signin shadow" action="/login" method="post">
         {{ csrf_field() }}
-        <img alt="UTN" title="Logo de la UTN" class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" width="200" height="200">
+        <img alt="UTN" title="Logo de la UTN" class="mb-4 shadowS" src="{{ asset('images/utn.jpg') }}" width="200" height="200" longdesc="#LogoDeLaUTN">
         <label for="email" class="sr-only">Email</label>
-        <input id="email" name="email" type="email" class="form-control" placeholder="Email" required="" autofocus="">
+        <input id="email" name="email" type="email" class="form-control" placeholder="Email" required autofocus>
         <label for="password" class="sr-only">Password</label>
-        <input id="password" name="password" type="password" class="form-control" placeholder="Password" required="">
+        <input id="password" name="password" type="password" class="form-control" placeholder="Password" required>
         <p style="color: #CE6161;">{{ $error }}</p>
         <p style="color: #28A745;">{{ $message }}</p>
         <div class="checkbox mb-3">
@@ -37,7 +37,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Resetar clave</h5>
+                    <p class="modal-title">Resetar clave</p>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -46,8 +46,8 @@
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                                <span class="input-group-text" for="email_reset_password" id="inputGroup-sizing-default">Email</span>
+                            <div class="input-group-prepend">
+                            <label for="email_reset_password" class="input-group-text">Email</label>
                             </div>
                             <input id="email_reset_password" name="email_reset_password" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                         </div>
